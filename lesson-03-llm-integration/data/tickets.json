@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "text": "Hello! I ordered headphones back on October 10, order #48213, and they still haven't arrived. The tracking hasn't updated for a week. Could you please tell me where my parcel is?",
+    "expected_category": "delivery"
+  },
+  {
+    "id": 2,
+    "text": "My card was charged UAH 2,499 twice for a single order 51907. The bank says both payments went through. Please refund the extra charge.",
+    "expected_category": "payment"
+  },
+  {
+    "id": 3,
+    "text": "THIS IS MY THIRD REQUEST!!! The coffee machine broke after two days. I want my money back, not to wait another month for a repair. If you don't sort this out by Friday, I'm going to court.",
+    "expected_category": "refund"
+  },
+  {
+    "id": 4,
+    "text": "I can't log in to my account: after I enter the SMS code, the page just reloads. I tried Chrome and Safari, and it's the same on my phone.",
+    "expected_category": "technical"
+  },
+  {
+    "id": 5,
+    "text": "Hi! Do you have gift cards? I want to give one to a colleague for her birthday, but I don't know what exactly she'd like.",
+    "expected_category": "other"
+  }
+]
