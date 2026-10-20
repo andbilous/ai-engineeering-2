@@ -1,0 +1,10 @@
+Forwarded from IT Jobs UA
+#vacancy #python #remote
+
+Middle Python Developer | FinPulse
+salary: 2500-3500$ per month
+format: remote (Ukraine or EU timezone)
+exp: 3+ years with Python, FastAPI, PostgreSQL
+nice to have: Docker, AWS
+
+CV -> hr@finpulse.io or DM @finpulse_hr

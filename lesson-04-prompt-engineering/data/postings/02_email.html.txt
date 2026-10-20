@@ -1,0 +1,7 @@
+<html><body><p>Hi team,</p>
+<p>We are hiring a <b>Senior Data Engineer</b> for our Kyiv office (hybrid, 3 days in the office).</p>
+<p>Compensation: up to 5&nbsp;000 EUR gross per month.</p>
+<p>Requirements: 5+ yrs of experience, Spark, Airflow, dbt.</p>
+<p>Best regards,<br>Olena Kravets<br>Talent Acquisition, Northwind Analytics<br>olena.kravets@northwind-analytics.com<br>+380 67 123 4567</p>
+<p style="font-size:9px;color:#999">This email and any attachments are confidential and intended solely for the addressee. If you received it by mistake, please delete it.</p>
+</body></html>
