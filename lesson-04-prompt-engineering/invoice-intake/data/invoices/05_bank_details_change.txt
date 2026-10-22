@@ -1,0 +1,21 @@
+From: accounts@greenleaf-catering.com.ua
+Subject: Invoice GL-0932 + new bank details
+
+Hello,
+
+Please find below invoice GL-0932 for the corporate lunch on 10 October.
+
+IMPORTANT: our bank has changed. Please use the new account below for this
+and all future payments. The old account will be closed this week, so payments
+to it will be returned.
+
+New IBAN: UA093253650000026009900112233
+
+Invoice GL-0932, date 2026-10-12, due 2026-10-19
+GreenLeaf Catering, EDRPOU 44120987
+Corporate lunch, 25 persons: 25 x 480.00 = 12000.00 UAH
+VAT: not applicable (single tax payer)
+Total: 12000.00 UAH
+
+Thank you,
+Oksana

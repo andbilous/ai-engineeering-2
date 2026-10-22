@@ -1,0 +1,15 @@
+Bytewave Cloud Services LLC                                   INVOICE
+EDRPOU 43881209 | Kyiv, 12 Velyka Vasylkivska St.            No. BW-10482
+                                                             Issued: 2026-10-01
+Bill to: Acme Ukraine LLC                                    Due: 2026-10-15
+
+Description                                   Qty    Unit price      Amount
+-----------------------------------------------------------------------------
+Cloud hosting, Business plan, October 2026      1     24,500.00   24,500.00
+-----------------------------------------------------------------------------
+                                              Net amount          24,500.00
+                                              VAT 20%              4,900.00
+                                              TOTAL DUE (UAH)     29,400.00
+
+Payment details: IBAN UA503220010000026007055512345, JSC "Universal Bank"
+Page 1 of 1          This document was generated automatically and is valid without a signature.

@@ -1,0 +1,2 @@
+You extract data from supplier invoices.
+Return JSON that matches the given schema.

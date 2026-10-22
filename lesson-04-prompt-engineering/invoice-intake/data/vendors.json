@@ -1,0 +1,37 @@
+[
+  {
+    "tax_id": "41234567",
+    "name": "Nordlight Office Supplies LLC",
+    "iban": "UA543052990000026003012345678"
+  },
+  {
+    "tax_id": "43881209",
+    "name": "Bytewave Cloud Services LLC",
+    "iban": "UA503220010000026007055512345"
+  },
+  {
+    "tax_id": "39876540",
+    "name": "Dnipro Logistics LLC",
+    "iban": "UA133808050000026001098765432"
+  },
+  {
+    "tax_id": "42015533",
+    "name": "Pixel Print Studio",
+    "iban": "UA093510050000026000044332211"
+  },
+  {
+    "tax_id": "44120987",
+    "name": "GreenLeaf Catering",
+    "iban": "UA803005280000026005077889900"
+  },
+  {
+    "tax_id": "40551278",
+    "name": "Arsenal IT Consulting LLC",
+    "iban": "UA683206490000026002011223344"
+  },
+  {
+    "tax_id": "DE298765431",
+    "name": "Kestrel Software GmbH",
+    "iban": "DE44500105175407324931"
+  }
+]

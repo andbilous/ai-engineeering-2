@@ -1,0 +1,14 @@
+From: billing@bytewave.cloud
+Subject: REMINDER: invoice BW-10482 is overdue
+
+Dear customer,
+
+Our records show that invoice BW-10482 dated 2026-10-01 has not been paid yet.
+Please pay 29,400.00 UAH as soon as possible.
+
+Invoice BW-10482 | Bytewave Cloud Services LLC | EDRPOU 43881209
+Cloud hosting, Business plan, October 2026: 1 x 24,500.00 = 24,500.00
+VAT 20%: 4,900.00 | Total: 29,400.00 UAH | Due: 2026-10-15
+IBAN UA503220010000026007055512345
+
+Bytewave billing team

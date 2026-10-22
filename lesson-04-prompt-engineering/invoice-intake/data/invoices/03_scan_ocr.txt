@@ -1,0 +1,15 @@
+DNlPRO LOGlSTlCS LLC
+EDRP0U: 39876540
+lnvoice No: DL-5521          Date: 09.10.2026
+Due date: 23.10.2026
+
+Item                               Qty   Price      Sum
+Delivery Kyiv-Dnipro, pallet       3     2800.00    8400.00
+Loading / unloading                1      950.00     950.00
+
+Sum without VAT ......... 9350.00
+VAT 20 % ................ 1870.00
+T0TAL TO PAY ............ 11220.00 UAH
+
+Bank: IBAN UA13 3808 0500 0002 6001 0987 6543 2
+[stamp] [signature]
