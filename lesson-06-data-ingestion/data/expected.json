@@ -1,0 +1,74 @@
+{
+  "files": 9,
+  "ocr_required": [
+    "scans/signed_nda_scan.pdf"
+  ],
+  "exact_duplicates": [
+    [
+      "shared_drive/expense_policy (copy).md",
+      "handbook/expense_policy.md"
+    ]
+  ],
+  "near_duplicates": [
+    [
+      "policies/remote_work_policy.pdf",
+      "policies/remote_work_policy_v2.docx"
+    ]
+  ],
+  "kept_version": "policies/remote_work_policy_v2.docx",
+  "must_not_contain": [
+    "Accept all cookies",
+    "Page 2 of 3",
+    "Northwind Logistics — Internal",
+    "dataLayer",
+    "All rights reserved",
+    "​",
+    "﻿",
+    "Ð"
+  ],
+  "must_contain": {
+    "it/vpn_setup.docx": [
+      "vpn-kyiv.northwind.example | Kyiv",
+      "3. Sign in with your company e-mail"
+    ],
+    "legacy/warehouse_safety_ua.txt": [
+      "захисне взуття"
+    ],
+    "handbook/onboarding.html": [
+      "Day 1"
+    ],
+    "handbook/expense_policy.md": [
+      "| Hotel, per night | 120 EUR | Team lead |"
+    ],
+    "finance/q3_budget_summary.pdf": [
+      "lease renegotiation"
+    ],
+    "policies/remote_work_policy_v2.docx": [
+      "up to three days per week"
+    ]
+  },
+  "access": {
+    "finance/q3_budget_summary.pdf": [
+      "finance"
+    ],
+    "legacy/warehouse_safety_ua.txt": [
+      "warehouse",
+      "hr"
+    ],
+    "it/vpn_setup.docx": [
+      "all_employees"
+    ]
+  },
+  "chunk_fields": [
+    "chunk_id",
+    "source",
+    "title",
+    "section",
+    "access",
+    "doc_hash",
+    "chunk_index",
+    "n_tokens",
+    "text",
+    "pipeline_version"
+  ]
+}

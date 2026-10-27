@@ -1,0 +1,2 @@
+# Keep the raw documents byte for byte: BOM, CRLF and cp1251 are part of the exercise
+data/raw/** -text

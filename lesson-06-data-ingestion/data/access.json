@@ -1,0 +1,6 @@
+{
+  "_comment": "Who may read chunks from each folder. The longest matching prefix wins.",
+  "finance/": ["finance"],
+  "legacy/": ["warehouse", "hr"],
+  "": ["all_employees"]
+}
