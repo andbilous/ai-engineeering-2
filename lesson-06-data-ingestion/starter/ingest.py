@@ -124,7 +124,8 @@ def unwrap(text: str) -> str:
     out: list[str] = []
     for line in text.split("\n"):
         prev = out[-1] if out else ""
-        joinable = (prev and line and not HEADING.match(line) and not HEADING.match(prev)
+        # A wrapped line is long and does not end a sentence; a short line is a title or a label.
+        joinable = (prev and line and len(prev) >= 60 and not HEADING.match(line) and not HEADING.match(prev)
                     and not line.lstrip().startswith(("- ", "|")) and not prev.lstrip().startswith("|")
                     and not re.match(r"^\d+\.\s", line) and not prev.rstrip().endswith((".", ":", "!", "?")))
         if joinable:
@@ -221,6 +222,14 @@ def title_of(doc: Doc) -> str:
     return Path(doc.source).stem
 
 
+def pdf_title(path: Path) -> str:
+    """A PDF often carries its real title in the metadata; the first line may be a stamp."""
+    if path.suffix.lower() != ".pdf":
+        return ""
+    meta = PdfReader(path).metadata
+    return (meta.title or "").strip() if meta else ""
+
+
 def chunk_records(doc: Doc, chunks: list[dict], rules: dict[str, list[str]], now: str) -> list[dict]:
     """TODO 9: everything retrieval will need later: where it came from, who may see it,
     which version of the document and of the pipeline produced it."""
@@ -294,7 +303,7 @@ def run(full: bool) -> dict:
         doc.effective = m.group(1) if m else None
         doc.text = normalize(raw_text)
         doc.doc_hash = content_hash(doc.text)
-        doc.title = title_of(doc)
+        doc.title = pdf_title(path) or title_of(doc)
         docs.append(doc)
 
     # exact duplicates: same normalized content -> keep the first path, drop the rest
