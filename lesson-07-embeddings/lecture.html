@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Заняття 7 · Як працює кожен TODO</title>
+<style>
+:root {
+  --bg: #f6f6f4; --card: #ffffff; --ink: #1d1d20; --muted: #6b6b73; --line: #dcdcd8; --soft: #eeeeea;
+  --accent: #2f5bd3; --ok: #1f8a4c; --bad: #c2412d; --warn: #b7791f; --hl: #fff1bf;
+  --c-policies: #2f5bd3; --c-handbook: #7a4fd0; --c-it: #0e8a8a; --c-finance: #c2412d; --c-legacy: #b7791f; --c-operations: #5c6b2e;
+  --stage: #fbfbfa; --dark: #1d1d20; --dark-ink: #f2f2f4;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141416; --card: #1c1c20; --ink: #ececef; --muted: #a0a0aa; --line: #2e2e34; --soft: #26262b;
+    --accent: #7fa0ff; --ok: #4cc283; --bad: #ff7a63; --warn: #f0b552; --hl: #4a4020;
+    --c-policies: #7fa0ff; --c-handbook: #b493ff; --c-it: #4cc9c9; --c-finance: #ff7a63; --c-legacy: #f0b552; --c-operations: #a9bd6a;
+    --stage: #18181c; --dark: #0e0e10; --dark-ink: #f2f2f4; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141416; --card: #1c1c20; --ink: #ececef; --muted: #a0a0aa; --line: #2e2e34; --soft: #26262b;
+  --accent: #7fa0ff; --ok: #4cc283; --bad: #ff7a63; --warn: #f0b552; --hl: #4a4020;
+  --c-policies: #7fa0ff; --c-handbook: #b493ff; --c-it: #4cc9c9; --c-finance: #ff7a63; --c-legacy: #f0b552; --c-operations: #a9bd6a;
+  --stage: #18181c; --dark: #0e0e10; --dark-ink: #f2f2f4; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 "IBM Plex Sans", -apple-system, "Segoe UI", Roboto, sans-serif; }
+code, .mono, h1, h2, .kicker, .chip, .caption b { font-family: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace; }
+code { font-size: .88em; background: var(--soft); padding: 1px 5px; border-radius: 4px; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 64px; }
+header.hero { background: var(--dark); color: var(--dark-ink); border-radius: 22px; padding: 32px 34px; margin-bottom: 18px; }
+header.hero h1 { margin: 0 0 6px; font-size: clamp(24px, 4vw, 34px); text-wrap: balance; }
+header.hero p { margin: 6px 0 0; color: #c8c8cc; max-width: 760px; }
+nav.toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 8px; }
+nav.toc a { text-decoration: none; color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; font: 13px "IBM Plex Mono", monospace; }
+nav.toc a:hover { border-color: var(--accent); color: var(--accent); }
+section.todo { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 24px; margin-top: 18px; scroll-margin-top: 12px; }
+.kicker { font-size: 12px; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; margin: 0; }
+h2 { margin: 2px 0 12px; font-size: 22px; text-wrap: balance; }
+.grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; align-items: start; }
+@media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+.text p { margin: 0 0 10px; }
+.text dl { margin: 0 0 10px; display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; }
+.text dt { font: 600 12px "IBM Plex Mono", monospace; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; padding-top: 3px; }
+.text dd { margin: 0; }
+.stage { background: var(--stage); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.stage svg { display: block; width: 100%; height: auto; }
+.controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--line); background: var(--card); }
+.controls button { font: 13px "IBM Plex Mono", monospace; border: 1px solid var(--line); background: var(--soft); color: var(--ink); border-radius: 8px; padding: 6px 12px; cursor: pointer; }
+.controls button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.controls .dots { display: flex; gap: 4px; margin-left: auto; }
+.controls .dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+.controls .dots i.on { background: var(--accent); }
+.caption { padding: 10px 14px; min-height: 64px; font-size: 14.5px; border-top: 1px solid var(--line); }
+.caption b { color: var(--accent); font-size: 12px; margin-right: 6px; }
+.key { background: var(--dark); color: var(--dark-ink); border-radius: 12px; padding: 12px 16px; margin-top: 12px; font-size: 15px; }
+.key::before { content: "ГОЛОВНЕ"; display: block; font: 11px "IBM Plex Mono", monospace; letter-spacing: .1em; color: #a0a0a8; margin-bottom: 2px; }
+table.res { width: 100%; border-collapse: collapse; font-size: 15px; margin-top: 8px; }
+table.res th { text-align: left; font: 500 12px "IBM Plex Mono", monospace; color: var(--muted); border-bottom: 1.5px solid var(--line); padding: 6px 8px; }
+table.res td { border-bottom: 1px solid var(--line); padding: 7px 8px; }
+.tablewrap { overflow-x: auto; }
+/* svg */
+svg text { font-family: "IBM Plex Sans", -apple-system, sans-serif; fill: var(--ink); }
+svg .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; }
+svg .muted { fill: var(--muted); }
+svg .box { fill: var(--card); stroke: var(--line); stroke-width: 1.2; }
+svg .boxdark { fill: var(--dark); }
+svg .t-white { fill: var(--dark-ink); }
+svg .ok { fill: var(--ok); } svg .bad { fill: var(--bad); } svg .acc { fill: var(--accent); }
+svg .s-ok { stroke: var(--ok); } svg .s-bad { stroke: var(--bad); } svg .s-acc { stroke: var(--accent); } svg .s-line { stroke: var(--line); } svg .s-muted { stroke: var(--muted); }
+svg .anim { transition: transform .7s cubic-bezier(.3,.7,.2,1), opacity .5s ease, fill .4s ease, stroke .4s ease; transform-box: view-box; }
+svg .hide { opacity: 0; }
+@media (prefers-reduced-motion: reduce) { svg .anim { transition: none; } }
+footer { color: var(--muted); font-size: 13px; margin-top: 28px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <p class="kicker" style="color:#a0a0a8">AI Engineering · Заняття 7 · Практика</p>
+  <h1>Як працює кожен TODO: пошук по корпусу Northwind</h1>
+  <p>Для кожного TODO — що ми робимо, навіщо і анімація того, що відбувається всередині. Усі числа, скори й рейтинги — зі справжнього прогону розв'язку на 69 чанках і 16 питаннях. Натисніть «▶ Відтворити» або йдіть по кроках.</p>
+</header>
+
+<nav class="toc" aria-label="TODO">
+  <a href="#overview">Огляд</a><a href="#t1">1 · Embeddings</a><a href="#t2">2 · Кеш</a><a href="#t3">3 · Індекс</a><a href="#t4">4 · Vector search</a><a href="#t5">5 · Метрики</a><a href="#t6">6 · BM25</a><a href="#t7">7 · RRF</a><a href="#t8">8 · Доступ</a><a href="#t9">9 · Reranker</a><a href="#t10">10 · Схожі чанки</a><a href="#results">Результат</a>
+</nav>
+
+<section class="todo" id="overview">
+  <p class="kicker">Огляд</p>
+  <h2>Шлях запиту через усі TODO</h2>
+  <div class="grid">
+    <div class="text">
+      <p>Співробітник ставить питання. Пошук має повернути 5 чанків, серед яких є правильна відповідь, — і лише ті, які цьому співробітнику дозволено бачити. На занятті 8 ці 5 чанків підуть у контекст моделі (RAG).</p>
+      <p>Чанки векторизуємо один раз і кладемо в базу (TODO 1–3). На кожен запит працюють два пошуки — за змістом і за словами (TODO 4, 6), їх результати зливаються (TODO 7) з урахуванням прав доступу (TODO 8), а reranker наводить остаточний порядок (TODO 9). TODO 5 міряє, чи все це працює.</p>
+    </div>
+    <div class="demo" data-demo="overview"></div>
+  </div>
+</section>
+
+<section class="todo" id="t1">
+  <p class="kicker">TODO 1 · вдома</p>
+  <h2>Embeddings: текст → вектор</h2>
+  <div class="grid">
+    <div class="text">
+      <dl><dt>Мета</dt><dd>Перетворити кожен текст на вектор з 384 чисел моделлю <code>EMBED_MODEL</code>.</dd>
+      <dt>Навіщо</dt><dd>Пошук за змістом порівнює вектори, а не слова: схожий зміст — близькі вектори, навіть без спільних слів і різними мовами.</dd>
+      <dt>Результат</dt><dd>Перевірка 1: «Can I work from home?» ближче до правила про remote work, ніж до тексту про батареї.</dd></dl>
+      <p>Окреме число у векторі нічого не означає. Сенс має лише <b>кут між векторами</b>: чим він менший, тим схожіший зміст. Його міряють косинусом: 1 — однаковий напрям, 0 — не пов'язані.</p>
+    </div>
+    <div class="demo" data-demo="t1"></div>
+  </div>
+  <div class="key">Модель — це функція «текст → точка в просторі змісту». Ми не порівнюємо слова, ми порівнюємо напрями векторів.</div>
+</section>
+
+<section class="todo" id="t2">
+  <p class="kicker">TODO 2 · вдома</p>
+  <h2>Кеш: кожен текст векторизуємо лише раз</h2>
+  <div class="grid">
+    <div class="text">
+      <dl><dt>Мета</dt><dd>Зберігати вектори у <code>output/embeddings_cache.json</code> і при повторному запуску брати їх звідти.</dd>
+      <dt>Навіщо</dt><dd>Модель повільна, а через API ще й платна. Незмінений чанк не векторизуємо вдруге — як інкрементальний ingestion на занятті 6.</dd>
+      <dt>Результат</dt><dd>Другий запуск друкує <code>embedded now 0</code>.</dd></dl>
+      <p>Ключ кешу — <code>sha256(модель + текст)</code>. Модель у ключі тому, що вектори різних моделей несумісні: змінили модель — кеш має промахнутися.</p>
+    </div>
+    <div class="demo" data-demo="t2"></div>
+  </div>
+</section>
+
+<section class="todo" id="t3">
+  <p class="kicker">TODO 3 · вдома</p>
+  <h2>Індекс: вектори + метадані в Qdrant</h2>
+  <div class="grid">
+    <div class="text">
+      <dl><dt>Мета</dt><dd>Створити колекцію з метрикою cosine і покласти туди одну точку на чанк: вектор + сам чанк як payload.</dd>
+      <dt>Навіщо</dt><dd>База швидко знаходить найближчі вектори і повертає разом з ними текст, джерело, розділ і доступ. Без payload ми знали б лише «точка №17 близько».</dd>
+      <dt>Результат</dt><dd>Перевірка 3: 69 точок, у кожної в payload є <code>chunk_id</code>.</dd></dl>
+    </div>
+    <div class="demo" data-demo="t3"></div>
+  </div>
+</section>
+
+<section class="todo" id="t4">
+  <p class="kicker">TODO 4 · вдома</p>
+  <h2>Vector search: k найближчих до запиту</h2>
+  <div class="grid">
+    <div class="text">
+      <dl><dt>Мета</dt><dd>Векторизувати запит <b>тією самою</b> моделлю і отримати 5 найближчих чанків зі скорами.</dd>
+      <dt>Навіщо</dt><dd>Це семантичний пошук: знаходить відповідь, коли користувач пише своїми словами.</dd>
+      <dt>Результат</dt><dd>Перевірка 4: «How many days a week can I work from home?» знаходить правило про віддалену роботу.</dd></dl>
+      <p>На анімації — справжні вектори всіх 69 чанків, спроєктовані з 384 вимірів на площину (PCA). Відстані на картинці приблизні: top-5 рахується в повних 384 вимірах. Колір — документ-джерело.</p>
+    </div>
+    <div class="demo" data-demo="t4"></div>
+  </div>
+  <div class="key">Скор — не ймовірність. Правильний чанк тут має 0.467 і стоїть другим: між «правильно» і «ні» — соті частки.</div>
+</section>
+
+<section class="todo" id="t5">
+  <p class="kicker">TODO 5 · вдома</p>
+  <h2>Метрики: recall@5 і MRR</h2>
+  <div class="grid">
+    <div class="text">
+      <dl><dt>Мета</dt><dd>Прогнати 16 питань, для кожного знайти позицію першого правильного чанка і порахувати дві цифри.</dd>
+      <dt>Навіщо</dt><dd>Без цифр не видно, чи hybrid і reranker справді допомагають. Ті самі метрики — на кроці 2 кейсу.</dd>
+      <dt>Результат</dt><dd>Рядок <code>vector 0.94 / 0.76</code> у таблиці.</dd></dl>
+      <p><b>recall@5</b> — у скількох питаннях правильний чанк є серед перших п'яти. <b>MRR</b> — середнє <code>1 / позиція</code>: 1-ше місце дає 1, 2-ге — 0.5, 3-тє — 0.33, не знайдено — 0.</p>
+    </div>
+    <div class="demo" data-demo="t5"></div>
+  </div>
+</section>
+
+<section class="todo" id="t6">
+  <p class="kicker">TODO 6 · на занятті</p>
+  <h2>BM25: пошук за словами</h2>
+  <div class="grid">
+    <div class="text">
+      <dl><dt>Мета</dt><dd>Класичний пошук за словами по тих самих чанках.</dd>
+      <dt>Навіщо</dt><dd>Векторний пошук не знайшов код угоди <code>BV-2013-02</code>: для моделі це майже випадкові символи. BM25 дає рідкісним словам велику вагу.</dd>
+      <dt>Результат</dt><dd>Перевірка 6: чанк з кодом угоди — на 1-му місці.</dd></dl>
+      <p>Вага слова (IDF) тим більша, чим у меншій кількості чанків воно трапляється. «bv» є лише в одному чанку з 69 — і саме воно вирішує.</p>
+    </div>
+    <div class="demo" data-demo="t6"></div>
+  </div>
+</section>
+
+<section class="todo" id="t7">
+  <p class="kicker">TODO 7 · на занятті</p>
+  <h2>Hybrid: Reciprocal Rank Fusion</h2>
+  <div class="grid">
+    <div class="text">
+      <dl><dt>Мета</dt><dd>Злити результати векторного пошуку і BM25 в один список.</dd>
+      <dt>Навіщо</dt><dd>Кожен пошук має сліпі зони, разом вони закривають одне одного. Скори складати не можна (13.0 у BM25 проти 0.36 у cosine), тому зливаємо <b>позиції</b>.</dd>
+      <dt>Результат</dt><dd>Hybrid recall@5 = 1.00 — вище, ніж у кожного окремо.</dd></dl>
+      <p>Формула: <code>score = Σ 1 / (60 + rank)</code> по всіх списках, де є чанк. Знайдений обома пошуками отримує два доданки й піднімається вгору.</p>
+    </div>
+    <div class="demo" data-demo="t7"></div>
+  </div>
+</section>
+
+<section class="todo" id="t8">
+  <p class="kicker">TODO 8 · на занятті</p>
+  <h2>Фільтр доступу — до пошуку, а не після</h2>
+  <div class="grid">
+    <div class="text">
+      <dl><dt>Мета</dt><dd>Пошук повертає лише чанки, чиє поле <code>access</code> перетинається з групами користувача.</dd>
+      <dt>Навіщо</dt><dd>Права з заняття 6 мають працювати в пошуку. Інструкція в промпті «не показуй фінанси» — не захист: чанк уже потрапив у контекст.</dd>
+      <dt>Результат</dt><dd><code>access filter: OK</code>: фінзвіт прихований від <code>all_employees</code>, але знаходиться для <code>finance</code>.</dd></dl>
+    </div>
+    <div class="demo" data-demo="t8"></div>
+  </div>
+</section>
+
+<section class="todo" id="t9">
+  <p class="kicker">TODO 9 · на занятті</p>
+  <h2>Reranker: точніший порядок, але не безкоштовно</h2>
+  <div class="grid">
+    <div class="text">
+      <dl><dt>Мета</dt><dd>Пересортувати top-20 кандидатів hybrid моделлю cross-encoder і лишити 5.</dd>
+      <dt>Навіщо</dt><dd>Embeddings бачать запит і чанк окремо. Reranker читає їх <b>разом</b> і точніше оцінює, чи відповідає чанк на питання.</dd>
+      <dt>Результат</dt><dd>MRR зростає, але дивимось на latency і на українське питання q12.</dd></dl>
+    </div>
+    <div class="demo" data-demo="t9"></div>
+  </div>
+  <div class="key">Reranker — не «завжди краще». Ця модель знає лише англійську і викинула правильну відповідь на українське питання. Додаємо його, лише якщо цифри на нашому корпусі це підтверджують.</div>
+</section>
+
+<section class="todo" id="t10">
+  <p class="kicker">TODO 10 · за бажанням</p>
+  <h2>Схожі за змістом чанки з різних документів</h2>
+  <div class="grid">
+    <div class="text">
+      <dl><dt>Мета</dt><dd>Знайти 5 пар чанків з різних документів з найбільшим cosine.</dd>
+      <dt>Навіщо</dt><dd>Шинґли з заняття 6 ловлять текстові копії, embeddings — той самий зміст іншими словами: дублі, суперечливі версії, пов'язані правила.</dd>
+      <dt>Результат</dt><dd><code>--pairs</code> друкує 5 пар зі скорами від −1 до 1.</dd></dl>
+      <p>Пастка: ця модель не нормалізує вектори. Скалярний добуток без ділення на довжини дає 8.96 — косинус так не може.</p>
+    </div>
+    <div class="demo" data-demo="t10"></div>
+  </div>
+</section>
+
+<section class="todo" id="results">
+  <p class="kicker">Результат</p>
+  <h2>Що має вийти в кінці</h2>
+  <div class="tablewrap"><table class="res" id="restable"></table></div>
+  <p style="margin-top:12px">Жодна конфігурація не найкраща за всіма метриками. Hybrid знаходить усе, reranker краще впорядковує англійські результати, але повільніший і губить українське питання. Вибір — це компроміс, і доводимо його цими цифрами. На корпусі з 16 питань одна відповідь — це 6 відсоткових пунктів, тому для серйозних висновків питань потрібно більше.</p>
+</section>
+
+<footer>Northwind Logistics — вигадана компанія для навчального корпусу. Дані: <code>data/chunks.jsonl</code>, <code>data/questions.json</code>; цифри — прогін <code>solution/search.py</code>.</footer>
+</div>
+
+<script>
+const D = {"points": [{"id": "finance/q3_budget_summary.pdf#0", "src": "finance", "label": "CONFIDENTIAL — Finance only\nEffective 20", "xy": [0.03252542665184654, -0.4143890611069726]}, {"id": "handbook/expense_policy.md#0", "src": "handbook", "label": "Expense Policy", "xy": [0.13294783972333296, -0.6790200531792432]}, {"id": "handbook/expense_policy.md#1", "src": "handbook", "label": "What can be claimed", "xy": [0.32504573941776965, -0.5740529268321237]}, {"id": "handbook/expense_policy.md#2", "src": "handbook", "label": "Limits", "xy": [0.26941535729412136, -0.5420235176052834]}, {"id": "handbook/expense_policy.md#3", "src": "handbook", "label": "How to submit", "xy": [0.18229878832177976, -0.5226979113909926]}, {"id": "handbook/expense_policy.md#4", "src": "handbook", "label": "Not reimbursed", "xy": [0.150502260613013, -0.7464973594472364]}, {"id": "handbook/onboarding.html#0", "src": "handbook", "label": "Onboarding guide", "xy": [0.18359460000253783, 0.0984463655799905]}, {"id": "handbook/onboarding.html#1", "src": "handbook", "label": "Before your first day", "xy": [0.4213624643494177, -0.05124127322959105]}, {"id": "handbook/onboarding.html#2", "src": "handbook", "label": "Day 1", "xy": [0.5380353004532046, 0.22984678400112826]}, {"id": "handbook/onboarding.html#3", "src": "handbook", "label": "Week 1", "xy": [0.23892723802551089, 0.11079891629127586]}, {"id": "handbook/onboarding.html#4", "src": "handbook", "label": "Week 2", "xy": [0.3248888376201263, -0.11299419530455909]}, {"id": "it/vpn_setup.docx#0", "src": "it", "label": "VPN setup", "xy": [0.6087357441077568, 0.26262538978173744]}, {"id": "it/vpn_setup.docx#1", "src": "it", "label": "Install the client", "xy": [0.6085869988808952, 0.309245027863811]}, {"id": "it/vpn_setup.docx#2", "src": "it", "label": "Servers", "xy": [0.5480465670839353, 0.2375140321780054]}, {"id": "it/vpn_setup.docx#3", "src": "it", "label": "Troubleshooting", "xy": [0.467644625909337, 0.2803799674825497]}, {"id": "legacy/warehouse_safety_ua.txt#0", "src": "legacy", "label": "Інструкція з безпеки на складі", "xy": [-0.07906455118501009, 0.16863813457550475]}, {"id": "legacy/warehouse_safety_ua.txt#1", "src": "legacy", "label": "1. На території складу носіть захисне вз", "xy": [0.03963656867000695, -0.1828895769057769]}, {"id": "legacy/warehouse_safety_ua.txt#2", "src": "legacy", "label": "Інструкцію затверджено 12.02.2019. Відпо", "xy": [0.17444075580041035, -0.14280597283131943]}, {"id": "policies/remote_work_policy_v2.docx#0", "src": "policies", "label": "Remote Work Policy", "xy": [0.40251684411220057, -0.15975433573897252]}, {"id": "policies/remote_work_policy_v2.docx#1", "src": "policies", "label": "1. Purpose", "xy": [0.4335059731509013, 0.148126060512436]}, {"id": "policies/remote_work_policy_v2.docx#2", "src": "policies", "label": "2. Eligibility", "xy": [0.35894483546864375, 0.08010733613175146]}, {"id": "policies/remote_work_policy_v2.docx#3", "src": "policies", "label": "3. Approval", "xy": [0.5051416140298322, 0.09598922761399503]}, {"id": "policies/remote_work_policy_v2.docx#4", "src": "policies", "label": "4. Equipment", "xy": [0.41404508290733216, -0.13410919741276447]}, {"id": "policies/remote_work_policy_v2.docx#5", "src": "policies", "label": "5. Information security", "xy": [0.5196819434211769, 0.16861609104297393]}, {"id": "policies/remote_work_policy_v2.docx#6", "src": "policies", "label": "6. Working hours", "xy": [0.390165645783908, 0.1525116309908326]}, {"id": "policies/remote_work_policy_v2.docx#7", "src": "policies", "label": "7. Review", "xy": [0.44424967607830906, -0.04721060676904717]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#0", "src": "operations", "label": "1 Purpose and scope", "xy": [-0.16937180646343508, 0.16786379009901953]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#1", "src": "operations", "label": "2 Definitions", "xy": [-0.15969870858320448, 0.08119574356136522]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#2", "src": "operations", "label": "3 Roles and responsibilities", "xy": [0.09813507482158537, 0.08115352909469858]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#3", "src": "operations", "label": "4.1 Booking a delivery slot", "xy": [-0.09095843410662716, 0.02225462581076137]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#4", "src": "operations", "label": "4.2 Unloading and checking", "xy": [-0.19669445361839807, 0.24162973980045444]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#5", "src": "operations", "label": "4.3 Receiving tolerances", "xy": [-0.23758594662312849, -0.02542817347228103]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#6", "src": "operations", "label": "4.3.1 Probe procedure", "xy": [-0.3326159145252626, -0.038936126272142525]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#7", "src": "operations", "label": "4.3.2 Documentation", "xy": [-0.3188764906035896, -0.0887977696732462]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#8", "src": "operations", "label": "5.1 Location types", "xy": [-0.26995141512213006, 0.0810610855327262]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#9", "src": "operations", "label": "5.2 Put-away rules", "xy": [-0.2840738669496878, 0.014168329859588352]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#10", "src": "operations", "label": "5.3 Rotation", "xy": [-0.2099215224737699, 0.04036385294821763]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#11", "src": "operations", "label": "5.4 Housekeeping", "xy": [-0.36302810681284703, -0.0662445360866598]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#12", "src": "operations", "label": "5.5 Temperature zones", "xy": [-0.23488750465009864, 0.16328068042798338]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#13", "src": "operations", "label": "6 Picking and packing", "xy": [-0.2515297601972424, 0.091719762081112]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#14", "src": "operations", "label": "6.1 Short picks", "xy": [-0.3054275566350503, 0.035115574426171525]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#15", "src": "operations", "label": "6.2 Packing", "xy": [-0.2875570195956852, -0.12497006890089898]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#16", "src": "operations", "label": "6.3 Productivity", "xy": [-0.20193052850073442, -0.12859592919599913]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#17", "src": "operations", "label": "7.1 Load planning", "xy": [-0.19133071861744935, 0.07783789221064079]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#18", "src": "operations", "label": "7.2 Dock safety", "xy": [-0.1306005095940186, 0.28497433925074345]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#19", "src": "operations", "label": "7.3 Seals and documents", "xy": [-0.220898006460239, 0.22976665290385043]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#20", "src": "operations", "label": "7.4 Carrier cut-off times", "xy": [-0.2255458673424799, 0.06004255118804504]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#21", "src": "operations", "label": "7.5 Late trucks", "xy": [-0.17632365965271962, 0.1134514561092407]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#22", "src": "operations", "label": "7.6 Returnable crates", "xy": [-0.3644355675950074, -0.151726509348289]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#23", "src": "operations", "label": "8 Health and safety", "xy": [-0.08479454644455879, 0.20735242256669062]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#24", "src": "operations", "label": "8.1 Personal protective equipment", "xy": [-0.11146559396341683, 0.07462015273695402]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#25", "src": "operations", "label": "8.2 Forklift operations", "xy": [-0.11491591840381833, 0.2164967021367048]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#26", "src": "operations", "label": "8.3 Battery charging", "xy": [-0.08115135005322344, -0.18281303258744863]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#27", "src": "operations", "label": "8.4 Manual handling", "xy": [-0.19534456380139892, -0.21851405768160728]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#28", "src": "operations", "label": "8.5 Safety KPIs", "xy": [-0.09365450228401984, 0.04941860159304976]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#29", "src": "operations", "label": "9 Returns and damaged goods", "xy": [-0.1967871488001705, -0.04694454620273704]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#30", "src": "operations", "label": "9.1 Product recalls", "xy": [-0.22533718043237716, -0.0021011951653578664]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#31", "src": "operations", "label": "10 Inventory counts", "xy": [-0.2879265693167816, -0.22638698119941708]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#32", "src": "operations", "label": "10.1 Count procedure", "xy": [-0.33503033874910226, 0.016231665437908334]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#33", "src": "operations", "label": "10.2 Year-end", "xy": [-0.21272801032778413, -0.2635491746751757]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#34", "src": "operations", "label": "11 Incident reporting", "xy": [-0.15601432307835966, 0.03808395405944481]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#35", "src": "operations", "label": "11.1 Fire alarm", "xy": [-0.20895033892579434, 0.13947800057593807]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#36", "src": "operations", "label": "Appendix A Contacts", "xy": [-0.035127061008856646, 0.2758395203950588]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#37", "src": "operations", "label": "Appendix B Abbreviations", "xy": [-0.25087299311497047, 0.031438256784222504]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#38", "src": "operations", "label": "Annex C Lviv cross-dock (UA)", "xy": [-0.16270036296722587, 0.20260607784597812]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#39", "src": "operations", "label": "C.1 Приймання", "xy": [-0.23503806950413392, 0.2065894342737208]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#40", "src": "operations", "label": "C.2 Час відвантаження", "xy": [-0.16089386494278088, 0.12383703005868286]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#41", "src": "operations", "label": "C.3 Охорона праці", "xy": [-0.09549839093501412, 0.17542449193511872]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#42", "src": "operations", "label": "Appendix D Memo QMS-2017-04", "xy": [-0.26648275973728763, -0.011446791534939861]}], "qpoints": {"q01": [0.26993363929117264, -0.136433658667403], "q10": [0.11455112114875558, -0.11973816504077028], "q12": [0.2190612329917388, -0.1156236484888063]}, "qtexts": {"q01": "How many days a week can I work from home?", "q10": "agreement BV-2013-02", "q12": "Скільки днів на тиждень можна працювати віддалено?"}, "todo1": {"texts": ["Can I work from home?", "Remote work is allowed three days per week.", "Batteries are charged in the charging room."], "dims": [[0.455, -0.29, 0.356, 0.107, 0.412, -0.137], [-0.332, -0.55, 0.052, -0.168, -0.163, 0.153], [-0.248, 0.906, -0.284, 0.229, 0.694, -0.314]], "cos01": 0.34626008570714106, "cos02": 0.016413701103661256, "xy": [[0.3471413217296967, -0.10977641425780249], [0.38832623408922673, 0.054455732341204294], [0.005737864844252184, -0.2505782008850156]]}, "todo2": [{"id": "finance/q3_budget_summary.pdf#0", "h": "448380a1dc"}, {"id": "handbook/expense_policy.md#0", "h": "6528891f56"}, {"id": "handbook/expense_policy.md#1", "h": "3a9209492b"}, {"id": "handbook/expense_policy.md#2", "h": "e2d5a7742b"}, {"id": "handbook/expense_policy.md#3", "h": "aa6d913fd2"}, {"id": "handbook/expense_policy.md#4", "h": "51bc376281"}, {"id": "handbook/onboarding.html#0", "h": "12922d76f4"}, {"id": "handbook/onboarding.html#1", "h": "6572dad917"}], "todo4": {"q": "How many days a week can I work from home?", "relevant": ["policies/remote_work_policy_v2.docx#2"], "hits": [{"id": "policies/remote_work_policy_v2.docx#3", "label": "3. Approval", "score": 0.4778, "access": ["all_employees"]}, {"id": "policies/remote_work_policy_v2.docx#2", "label": "2. Eligibility", "score": 0.4667, "access": ["all_employees"]}, {"id": "policies/remote_work_policy_v2.docx#6", "label": "6. Working hours", "score": 0.4551, "access": ["all_employees"]}, {"id": "policies/remote_work_policy_v2.docx#0", "label": "Remote Work Policy", "score": 0.3431, "access": ["all_employees"]}, {"id": "policies/remote_work_policy_v2.docx#1", "label": "1. Purpose", "score": 0.3276, "access": ["all_employees"]}]}, "ranks": [{"id": "q01", "q": "How many days a week can I work from home?", "kind": "paraphrase", "rank": 2}, {"id": "q02", "q": "My work laptop was stolen on a trip. What do I do?", "kind": "paraphrase", "rank": 1}, {"id": "q03", "q": "How much can I spend on a hotel during a business trip?", "kind": "paraphrase", "rank": 2}, {"id": "q04", "q": "Who helps a newcomer with everyday questions in the first month?", "kind": "paraphrase", "rank": 1}, {"id": "q05", "q": "What should staff do when the fire alarm goes off?", "kind": "paraphrase", "rank": 1}, {"id": "q06", "q": "What is the latest time to hand over parcels to DPD on a weekday?", "kind": "paraphrase", "rank": 1}, {"id": "q07", "q": "vpn-backup.northwind.example", "kind": "exact", "rank": 2}, {"id": "q08", "q": "What does FEFO mean?", "kind": "exact", "rank": 1}, {"id": "q09", "q": "reason code 14", "kind": "exact", "rank": 1}, {"id": "q10", "q": "agreement BV-2013-02", "kind": "exact", "rank": null}, {"id": "q11", "q": "Who is on extension 240?", "kind": "exact", "rank": 3}, {"id": "q12", "q": "Скільки днів на тиждень можна працювати віддалено?", "kind": "cross-lingual", "rank": 3}, {"id": "q13", "q": "До котрої години Нова Пошта забирає посилки у Львові?", "kind": "ukrainian", "rank": 1}, {"id": "q14", "q": "Яку вагу можна піднімати одному на складі?", "kind": "ukrainian", "rank": 1}, {"id": "q15", "q": "What were the total operating costs in Q3?", "kind": "access", "rank": 1}, {"id": "q16", "q": "Can I claim money for a keyboard I use at home?", "kind": "paraphrase", "rank": 1}], "todo6": {"q": "agreement BV-2013-02", "tokens": ["agreement", "bv", "2013", "02"], "idf": {"agreement": 3.3, "bv": 3.82, "2013": 3.3, "02": 3.3}, "bm25": [{"id": "operations/legacy_warehouse_manual_rev7.pdf#16", "label": "6.3 Productivity", "score": 13.0007, "access": ["warehouse"]}, {"id": "legacy/warehouse_safety_ua.txt#2", "label": "Інструкцію затверджено 12.02.2019. Відпо", "score": 5.3683, "access": ["warehouse", "hr"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#28", "label": "8.5 Safety KPIs", "score": 3.1901, "access": ["warehouse"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#37", "label": "Appendix B Abbreviations", "score": 3.1047, "access": ["warehouse"]}], "vector": [{"id": "operations/legacy_warehouse_manual_rev7.pdf#37", "label": "Appendix B Abbreviations", "score": 0.3619, "access": ["warehouse"]}, {"id": "legacy/warehouse_safety_ua.txt#2", "label": "Інструкцію затверджено 12.02.2019. Відпо", "score": 0.3559, "access": ["warehouse", "hr"]}, {"id": "handbook/expense_policy.md#0", "label": "Expense Policy", "score": 0.3459, "access": ["all_employees"]}, {"id": "policies/remote_work_policy_v2.docx#0", "label": "Remote Work Policy", "score": 0.3292, "access": ["all_employees"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#39", "label": "C.1 Приймання", "score": 0.2878, "access": ["warehouse"]}]}, "todo7": {"vector": [{"id": "operations/legacy_warehouse_manual_rev7.pdf#37", "label": "Appendix B Abbreviations", "score": 0.3619, "access": ["warehouse"]}, {"id": "legacy/warehouse_safety_ua.txt#2", "label": "Інструкцію затверджено 12.02.2019. Відпо", "score": 0.3559, "access": ["warehouse", "hr"]}, {"id": "handbook/expense_policy.md#0", "label": "Expense Policy", "score": 0.3459, "access": ["all_employees"]}, {"id": "policies/remote_work_policy_v2.docx#0", "label": "Remote Work Policy", "score": 0.3292, "access": ["all_employees"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#39", "label": "C.1 Приймання", "score": 0.2878, "access": ["warehouse"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#42", "label": "Appendix D Memo QMS-2017-04", "score": 0.2877, "access": ["warehouse"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#30", "label": "9.1 Product recalls", "score": 0.2807, "access": ["warehouse"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#7", "label": "4.3.2 Documentation", "score": 0.2695, "access": ["warehouse"]}], "bm25": [{"id": "operations/legacy_warehouse_manual_rev7.pdf#16", "label": "6.3 Productivity", "score": 13.0007, "access": ["warehouse"]}, {"id": "legacy/warehouse_safety_ua.txt#2", "label": "Інструкцію затверджено 12.02.2019. Відпо", "score": 5.3683, "access": ["warehouse", "hr"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#28", "label": "8.5 Safety KPIs", "score": 3.1901, "access": ["warehouse"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#37", "label": "Appendix B Abbreviations", "score": 3.1047, "access": ["warehouse"]}], "fused": [{"id": "legacy/warehouse_safety_ua.txt#2", "label": "Інструкцію затверджено 12.02.2019. Відпо", "score": 0.0323, "access": ["warehouse", "hr"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#37", "label": "Appendix B Abbreviations", "score": 0.032, "access": ["warehouse"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#16", "label": "6.3 Productivity", "score": 0.0164, "access": ["warehouse"]}, {"id": "handbook/expense_policy.md#0", "label": "Expense Policy", "score": 0.0159, "access": ["all_employees"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#28", "label": "8.5 Safety KPIs", "score": 0.0159, "access": ["warehouse"]}], "relevant": ["operations/legacy_warehouse_manual_rev7.pdf#16"]}, "todo8": {"q": "What were the total operating costs in Q3?", "all": [{"id": "handbook/expense_policy.md#0", "label": "Expense Policy", "score": 0.4466, "access": ["all_employees"]}, {"id": "handbook/expense_policy.md#1", "label": "What can be claimed", "score": 0.4004, "access": ["all_employees"]}, {"id": "policies/remote_work_policy_v2.docx#4", "label": "4. Equipment", "score": 0.353, "access": ["all_employees"]}], "finance": [{"id": "finance/q3_budget_summary.pdf#0", "label": "CONFIDENTIAL — Finance only\nEffective 20", "score": 0.7848, "access": ["finance"]}], "nofilter": [{"id": "finance/q3_budget_summary.pdf#0", "label": "CONFIDENTIAL — Finance only\nEffective 20", "score": 0.7848, "access": ["finance"]}, {"id": "handbook/expense_policy.md#0", "label": "Expense Policy", "score": 0.4466, "access": ["all_employees"]}, {"id": "handbook/expense_policy.md#1", "label": "What can be claimed", "score": 0.4004, "access": ["all_employees"]}]}, "todo9": {"q10": {"q": "agreement BV-2013-02", "relevant": ["operations/legacy_warehouse_manual_rev7.pdf#16"], "before": [{"id": "legacy/warehouse_safety_ua.txt#2", "label": "Інструкцію затверджено 12.02.2019. Відпо", "score": 0.0323, "access": ["warehouse", "hr"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#37", "label": "Appendix B Abbreviations", "score": 0.032, "access": ["warehouse"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#16", "label": "6.3 Productivity", "score": 0.0164, "access": ["warehouse"]}, {"id": "handbook/expense_policy.md#0", "label": "Expense Policy", "score": 0.0159, "access": ["all_employees"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#28", "label": "8.5 Safety KPIs", "score": 0.0159, "access": ["warehouse"]}, {"id": "policies/remote_work_policy_v2.docx#0", "label": "Remote Work Policy", "score": 0.0156, "access": ["all_employees"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#39", "label": "C.1 Приймання", "score": 0.0154, "access": ["warehouse"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#42", "label": "Appendix D Memo QMS-2017-04", "score": 0.0152, "access": ["warehouse"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#30", "label": "9.1 Product recalls", "score": 0.0149, "access": ["warehouse"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#7", "label": "4.3.2 Documentation", "score": 0.0147, "access": ["warehouse"]}], "after": [{"id": "operations/legacy_warehouse_manual_rev7.pdf#16", "label": "6.3 Productivity", "score": 3.7486, "access": ["warehouse"]}, {"id": "handbook/expense_policy.md#0", "label": "Expense Policy", "score": -8.374, "access": ["all_employees"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#37", "label": "Appendix B Abbreviations", "score": -9.1411, "access": ["warehouse"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#28", "label": "8.5 Safety KPIs", "score": -9.3044, "access": ["warehouse"]}, {"id": "legacy/warehouse_safety_ua.txt#2", "label": "Інструкцію затверджено 12.02.2019. Відпо", "score": -9.4611, "access": ["warehouse", "hr"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#42", "label": "Appendix D Memo QMS-2017-04", "score": -9.762, "access": ["warehouse"]}, {"id": "policies/remote_work_policy_v2.docx#0", "label": "Remote Work Policy", "score": -10.0307, "access": ["all_employees"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#7", "label": "4.3.2 Documentation", "score": -10.4306, "access": ["warehouse"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#29", "label": "9 Returns and damaged goods", "score": -10.7114, "access": ["warehouse"]}, {"id": "operations/legacy_warehouse_manual_rev7.pdf#39", "label": "C.1 Приймання", "score": -10.8654, "access": ["warehouse"]}]}, "q12": {"q": "Скільки днів на тиждень можна працювати віддалено?", "relevant": ["policies/remote_work_policy_v2.docx#2"], "before": [{"id": "policies/remote_work_policy_v2.docx#3", "label": "3. Approval", "score": 0.0164, "access": ["all_employees"]}, {"id": "policies/remote_work_policy_v2.docx#6", "label": "6. Working hours", "score": 0.0161, "access": ["all_employees"]}, {"id": "policies/remote_work_policy_v2.docx#2", "label": "2. Eligibility", "score": 0.0159, "access": ["all_employees"]}, {"id": "policies/remote_work_policy_v2.docx#0", "label": "Remote Work Policy", "score": 0.0156, "access": ["all_employees"]}, {"id": "handbook/onboarding.html#3", "label": "Week 1", "score": 0.0154, "access": ["all_employees"]}, {"id": "policies/remote_work_policy_v2.docx#1", "label": "1. Purpose", "score": 0.0152, "access": ["all_employees"]}, {"id": "handbook/onboarding.html#4", "label": "Week 2", "score": 0.0149, "access": ["all_employees"]}, {"id": "policies/remote_work_policy_v2.docx#5", "label": "5. Information security", "score": 0.0147, "access": ["all_employees"]}, {"id": "policies/remote_work_policy_v2.docx#7", "label": "7. Review", "score": 0.0145, "access": ["all_employees"]}, {"id": "policies/remote_work_policy_v2.docx#4", "label": "4. Equipment", "score": 0.0143, "access": ["all_employees"]}], "after": [{"id": "handbook/onboarding.html#1", "label": "Before your first day", "score": -8.165, "access": ["all_employees"]}, {"id": "handbook/expense_policy.md#1", "label": "What can be claimed", "score": -8.1749, "access": ["all_employees"]}, {"id": "handbook/expense_policy.md#4", "label": "Not reimbursed", "score": -8.3175, "access": ["all_employees"]}, {"id": "policies/remote_work_policy_v2.docx#3", "label": "3. Approval", "score": -8.3175, "access": ["all_employees"]}, {"id": "policies/remote_work_policy_v2.docx#6", "label": "6. Working hours", "score": -8.3689, "access": ["all_employees"]}, {"id": "policies/remote_work_policy_v2.docx#0", "label": "Remote Work Policy", "score": -8.4155, "access": ["all_employees"]}, {"id": "handbook/expense_policy.md#0", "label": "Expense Policy", "score": -8.4931, "access": ["all_employees"]}, {"id": "policies/remote_work_policy_v2.docx#2", "label": "2. Eligibility", "score": -8.5164, "access": ["all_employees"]}, {"id": "handbook/expense_policy.md#3", "label": "How to submit", "score": -8.5464, "access": ["all_employees"]}, {"id": "policies/remote_work_policy_v2.docx#4", "label": "4. Equipment", "score": -8.5507, "access": ["all_employees"]}]}}, "pairs": [{"a": "handbook/onboarding.html#4", "b": "policies/remote_work_policy_v2.docx#2", "la": "Week 2", "lb": "2. Eligibility", "cos": 0.657, "dot": 8.96}, {"a": "handbook/onboarding.html#2", "b": "it/vpn_setup.docx#1", "la": "Day 1", "lb": "Install the client", "cos": 0.639, "dot": 7.38}, {"a": "legacy/warehouse_safety_ua.txt#0", "b": "operations/legacy_warehouse_manual_rev7.pdf#41", "la": "Інструкція з безпеки на складі", "lb": "C.3 Охорона праці", "cos": 0.619, "dot": 7.01}, {"a": "handbook/expense_policy.md#1", "b": "policies/remote_work_policy_v2.docx#4", "la": "What can be claimed", "lb": "4. Equipment", "cos": 0.604, "dot": 8.45}, {"a": "legacy/warehouse_safety_ua.txt#2", "b": "policies/remote_work_policy_v2.docx#0", "la": "Інструкцію затверджено 12.02.2019. Відпо", "lb": "Remote Work Policy", "cos": 0.595, "dot": 8.6}], "results": {"vector": {"recall": 0.94, "mrr": 0.76, "misses": ["q10"], "ms": 2.11}, "bm25": {"recall": 0.88, "mrr": 0.69, "misses": ["q06", "q12"], "ms": 0.07}, "hybrid": {"recall": 1.0, "mrr": 0.82, "misses": [], "ms": 2.38}, "hybrid+rerank": {"recall": 0.94, "mrr": 0.88, "misses": ["q12"], "ms": 133.59}}, "snip": {"operations/legacy_warehouse_manual_rev7.pdf#16": "… ev 6 short picks are no longer written on the paper pick list. 2 Agreed with the works council, see agreement BV-2013-02.", "policies/remote_work_policy_v2.docx#2": "Employees who have completed the probation period may work remotely up to three days per week. Warehouse and dispatch roles are not eligible, because their work requires physical presence on site. Team leads may approve exceptions for a limited period.", "finance/q3_budget_summary.pdf#0": "CONFIDENTIAL — Finance only\nEffective 2026-10-05\nQ3 2026 Budget Summary\nOverview\nTotal operating costs in Q3 were 4.2 million EUR, 3 percent below plan. Fuel costs rose by 11 percent, offset by lower warehouse rent after the Lviv lease renegotiation.\nHeadcount"}, "cards": [{"chunk_id": "policies/remote_work_policy_v2.docx#2", "section": "Remote Work Policy > 2. Eligibility", "access": ["all_employees"]}, {"chunk_id": "handbook/expense_policy.md#2", "section": "Expense Policy > Limits", "access": ["all_employees"]}, {"chunk_id": "it/vpn_setup.docx#2", "section": "VPN setup > Servers", "access": ["all_employees"]}, {"chunk_id": "finance/q3_budget_summary.pdf#0", "section": "", "access": ["finance"]}]};
+const NS = "http://www.w3.org/2000/svg";
+const W = 640, H = 380;
+const SRC = { policies: "Політика remote", handbook: "Handbook", it: "IT / VPN", finance: "Фінанси", legacy: "Склад (UA)", operations: "Регламент складу" };
+const colorOf = src => `var(--c-${src})`;
+const short = id => id.replace("operations/legacy_warehouse_manual_rev7.pdf", "manual").replace("policies/remote_work_policy_v2.docx", "remote").replace("handbook/", "").replace("legacy/warehouse_safety_ua.txt", "safety_ua").replace("finance/q3_budget_summary.pdf", "q3_budget").replace("it/vpn_setup.docx", "vpn").replace(".md", "").replace(".html", "");
+const cut = (s, n) => s.length > n ? s.slice(0, n - 1) + "…" : s;
+
+function el(tag, attrs = {}, parent, text) {
+  const e = document.createElementNS(NS, tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === "cls") e.setAttribute("class", v); else e.setAttribute(k, v);
+  }
+  if (text !== undefined) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+const move = (e, x, y, s = 1) => { e.style.transform = `translate(${x}px, ${y}px) scale(${s})`; };
+const show = (e, on = true) => e.classList.toggle("hide", !on);
+function g(parent, cls = "anim") { return el("g", { cls }, parent); }
+function rect(p, x, y, w, h, cls = "box", r = 8) { return el("rect", { x, y, width: w, height: h, rx: r, cls }, p); }
+function txt(p, x, y, s, attrs = {}) { return el("text", { x, y, "font-size": 13, ...attrs }, p, s); }
+
+/* ---------- player ---------- */
+function player(host, build) {
+  host.innerHTML = "";
+  const stage = document.createElement("div"); stage.className = "stage";
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img" });
+  stage.appendChild(svg);
+  const cap = document.createElement("div"); cap.className = "caption";
+  const ctr = document.createElement("div"); ctr.className = "controls";
+  const bPlay = document.createElement("button"); bPlay.className = "primary"; bPlay.textContent = "▶ Відтворити";
+  const bStep = document.createElement("button"); bStep.textContent = "Крок →";
+  const bBack = document.createElement("button"); bBack.textContent = "← Назад";
+  const bReset = document.createElement("button"); bReset.textContent = "↺ Спочатку";
+  const dots = document.createElement("div"); dots.className = "dots";
+  ctr.append(bPlay, bBack, bStep, bReset, dots);
+  stage.append(cap, ctr);
+  host.appendChild(stage);
+  let steps, i, timer = null;
+  function init() {
+    svg.innerHTML = ""; steps = build(svg); i = 0; dots.innerHTML = "";
+    steps.forEach(() => dots.appendChild(document.createElement("i")));
+    render();
+  }
+  function render() {
+    steps[i].do();
+    cap.innerHTML = `<b>${i + 1}/${steps.length}</b>${steps[i].cap}`;
+    [...dots.children].forEach((d, k) => d.classList.toggle("on", k <= i));
+  }
+  function go(n) {
+    if (n < i) { const t = n; init(); while (i < t) { i++; steps[i].do(); } render(); return; }
+    while (i < n) { i++; steps[i].do(); }
+    render();
+  }
+  function stop() { clearTimeout(timer); timer = null; bPlay.textContent = "▶ Відтворити"; }
+  function play() {
+    if (timer) return stop();
+    if (i >= steps.length - 1) init();
+    bPlay.textContent = "❚❚ Пауза";
+    const tick = () => { if (i >= steps.length - 1) return stop(); go(i + 1); timer = setTimeout(tick, steps[i].t || 2200); };
+    timer = setTimeout(tick, 900);
+  }
+  bPlay.onclick = play;
+  bStep.onclick = () => { stop(); if (i < steps.length - 1) go(i + 1); };
+  bBack.onclick = () => { stop(); if (i > 0) go(i - 1); };
+  bReset.onclick = () => { stop(); init(); };
+  init();
+  if (new URLSearchParams(location.search).has("final")) go(steps.length - 1);
+}
+
+/* ---------- overview ---------- */
+function demoOverview(svg) {
+  const nodes = [
+    ["Чанки", 20, 40, "69 · заняття 6"], ["Embeddings", 170, 40, "TODO 1–2"], ["Qdrant", 320, 40, "TODO 3"],
+    ["Запит", 20, 170, "питання"], ["Vector search", 170, 130, "TODO 4"], ["BM25", 170, 210, "TODO 6"],
+    ["RRF + доступ", 320, 170, "TODO 7–8"], ["Reranker", 470, 170, "TODO 9"], ["Top-5", 470, 290, "→ RAG, заняття 8"], ["Метрики", 320, 290, "TODO 5"]];
+  const box = {};
+  const links = [["Чанки", "Embeddings"], ["Embeddings", "Qdrant"], ["Запит", "Vector search"], ["Запит", "BM25"], ["Qdrant", "Vector search"], ["Vector search", "RRF + доступ"], ["BM25", "RRF + доступ"], ["RRF + доступ", "Reranker"], ["Reranker", "Top-5"], ["Top-5", "Метрики"]];
+  const L = g(svg, "");
+  const N = g(svg, "");
+  nodes.forEach(([n, x, y, sub]) => {
+    const b = g(N); rect(b, x, y, 140, 52, n === "Запит" ? "boxdark" : "box", 10);
+    txt(b, x + 12, y + 22, n, { "font-weight": 600, cls: n === "Запит" ? "t-white" : "" });
+    txt(b, x + 12, y + 40, sub, { "font-size": 11, cls: n === "Запит" ? "t-white mono" : "muted mono" });
+    box[n] = { x, y, b }; show(b, false);
+  });
+  const lines = links.map(([a, b]) => {
+    const A = box[a], B = box[b];
+    const x1 = A.x + 140, y1 = A.y + 26, x2 = B.x, y2 = B.y + 26;
+    const vertical = Math.abs(A.x - B.x) < 5, back = B.x + 140 <= A.x + 1;
+    const d = vertical ? `M${A.x + 70},${A.y + 52} L${B.x + 70},${B.y}`
+      : back ? `M${A.x + 70},${A.y + 52} C${A.x + 70},${B.y + 26} ${B.x + 170},${B.y + 26} ${B.x + 140},${B.y + 26}`
+      : `M${x1},${y1} C${x1 + 20},${y1} ${x2 - 20},${y2} ${x2},${y2}`;
+    const l = el("path", { d, fill: "none", "stroke-width": 1.6, cls: "anim s-muted hide" }, L);
+    return [a, b, l];
+  });
+  const dot = el("circle", { r: 7, cx: 0, cy: 0, cls: "anim acc hide" }, svg);
+  const at = n => [box[n].x + 70, box[n].y + 26];
+  const showNodes = ns => ns.forEach(n => show(box[n].b));
+  const showLinks = (pairs) => lines.forEach(([a, b, l]) => { if (pairs.some(p => p[0] === a && p[1] === b)) show(l); });
+  return [
+    { cap: "Почнемо з даних: 69 чанків з метаданими — результат заняття 6.", do: () => showNodes(["Чанки"]) },
+    { cap: "Один раз, офлайн: кожен чанк → вектор (TODO 1–2) → база Qdrant (TODO 3).", do: () => { showNodes(["Embeddings", "Qdrant"]); showLinks([["Чанки", "Embeddings"], ["Embeddings", "Qdrant"]]); } },
+    { cap: "Співробітник ставить питання. Тепер усе відбувається на кожен запит.", do: () => { showNodes(["Запит"]); show(dot); move(dot, ...at("Запит")); } },
+    { cap: "Два пошуки паралельно: за змістом у Qdrant (TODO 4) і за словами BM25 (TODO 6).", do: () => { showNodes(["Vector search", "BM25"]); showLinks([["Запит", "Vector search"], ["Запит", "BM25"], ["Qdrant", "Vector search"]]); move(dot, ...at("Vector search")); } },
+    { cap: "Два списки зливаються в один за рангами (RRF, TODO 7), з фільтром прав доступу (TODO 8).", do: () => { showNodes(["RRF + доступ"]); showLinks([["Vector search", "RRF + доступ"], ["BM25", "RRF + доступ"]]); move(dot, ...at("RRF + доступ")); } },
+    { cap: "Reranker пересортовує 20 кандидатів (TODO 9) — лишаються 5 найкращих.", do: () => { showNodes(["Reranker", "Top-5"]); showLinks([["RRF + доступ", "Reranker"], ["Reranker", "Top-5"]]); move(dot, ...at("Reranker")); } },
+    { cap: "Метрики (TODO 5) перевіряють на 16 питаннях, чи правильний чанк потрапив у top-5. Ці 5 чанків на занятті 8 підуть у RAG.", do: () => { showNodes(["Метрики"]); showLinks([["Top-5", "Метрики"]]); move(dot, ...at("Top-5")); } },
+  ];
+}
+
+/* ---------- TODO 1 ---------- */
+function demoT1(svg) {
+  const t = D.todo1;
+  const cards = t.texts.map((s, k) => { const c = g(svg); rect(c, 16, 30 + k * 62, 200, 44, "box", 8); txt(c, 26, 57 + k * 62, cut(s, 30), { "font-size": 12 }); return c; });
+  const model = g(svg); rect(model, 244, 92, 110, 70, "boxdark", 12); txt(model, 262, 122, "Embedding", { cls: "t-white", "font-weight": 600 }); txt(model, 262, 142, "model", { cls: "t-white mono", "font-size": 11 }); show(model, false);
+  const vecs = t.dims.map((d, k) => { const v = g(svg); rect(v, 380, 30 + k * 62, 244, 44, "box", 8); txt(v, 390, 50 + k * 62, "[" + d.slice(0, 5).map(x => x.toFixed(2)).join(", ") + ", …]", { cls: "mono", "font-size": 10.5 }); txt(v, 390, 66 + k * 62, "384 числа", { cls: "muted mono", "font-size": 10 }); show(v, false); return v; });
+  // angle diagram
+  const ang = g(svg); show(ang, false);
+  const ox = 310, oy = 200, R = 140;
+  const a0 = 15, a1 = a0 + Math.acos(t.cos01) * 180 / Math.PI, a2 = a0 - Math.acos(t.cos02) * 180 / Math.PI;
+  const pt = a => [ox + R * Math.cos(a * Math.PI / 180), oy - R * Math.sin(a * Math.PI / 180)];
+  const arrows = [[a0, "Can I work from home?", "var(--accent)"], [a1, "Remote work is allowed…", "var(--ok)"], [a2, "Batteries are charged…", "var(--bad)"]];
+  rect(ang, 280, 20, 350, 350, "box", 12);
+  arrows.forEach(([a, lab, col]) => { const [x, y] = pt(a); el("line", { x1: ox, y1: oy, x2: x, y2: y, stroke: col, "stroke-width": 3 }, ang); txt(ang, Math.min(x + 6, 470), y + (a < 0 ? 16 : -6), lab, { "font-size": 11.5, style: `fill:${col}` }); });
+  el("circle", { cx: ox, cy: oy, r: 4, cls: "muted" }, ang);
+  const c1 = txt(ang, 16, 250, `cos(home, remote) = ${t.cos01.toFixed(2)}  → кут ${Math.round(a1 - a0)}°`, { cls: "mono", "font-size": 12 });
+  const c2 = txt(ang, 16, 272, `cos(home, batteries) = ${t.cos02.toFixed(2)}  → кут ${Math.round(a0 - a2)}°`, { cls: "mono", "font-size": 12 });
+  return [
+    { cap: "Три тексти. Перші два — про одне (робота з дому), але спільних слів у них майже немає. Третій — про інше.", do: () => {} },
+    { cap: "Кожен текст проходить через ту саму embedding-модель.", do: () => { show(model); cards.forEach((c, k) => { move(c, 250, 92 - (30 + k * 62) + 10, .5); c.style.opacity = .15; }); } },
+    { cap: "На виході — вектор з 384 чисел для кожного тексту. Ось справжні перші 6 чисел. Окреме число нічого не означає.", do: () => { vecs.forEach(v => show(v)); } },
+    { cap: "Сенс має кут між векторами. Кути на схемі — справжні, з косинусів цих трьох векторів у 384 вимірах.", do: () => { cards.forEach(c => { c.style.opacity = 0; }); show(model, false); vecs.forEach(v => { move(v, -364, 0); }); show(ang); }, t: 3000 },
+    { cap: `«Робота з дому» і «remote work» — косинус ${t.cos01.toFixed(2)}, кут менший. «Робота з дому» і «батареї» — ${t.cos02.toFixed(2)}, майже перпендикулярні. Це і перевіряє перевірка 1.`, do: () => { c1.style.fontWeight = 700; } },
+  ];
+}
+
+/* ---------- TODO 2 ---------- */
+function demoT2(svg) {
+  const items = D.todo2.slice(0, 6);
+  const rows = items.map((it, k) => { const r = g(svg); rect(r, 12, 20 + k * 46, 200, 36, "box", 7); txt(r, 22, 42 + k * 46, cut(short(it.id), 24), { cls: "mono", "font-size": 11 }); const h = txt(r, 150, 42 + k * 46, "", { cls: "muted mono", "font-size": 10 }); r.h = h; return r; });
+  const cache = g(svg, ""); rect(cache, 250, 20, 170, 276, "box", 10); txt(cache, 262, 42, "embeddings_cache.json", { cls: "mono", "font-size": 11, "font-weight": 600 });
+  const entries = items.map((it, k) => { const e = g(svg); txt(e, 262, 70 + k * 36, it.h + "… → [0.02, …]", { cls: "mono", "font-size": 10 }); show(e, false); return e; });
+  const model = g(svg, ""); rect(model, 460, 110, 160, 70, "boxdark", 12); txt(model, 476, 140, "Модель", { cls: "t-white", "font-weight": 600 }); txt(model, 476, 160, "повільно, ~сек", { cls: "t-white mono", "font-size": 11 });
+  const counter = txt(svg, 12, 330, "embedded now: —", { cls: "mono", "font-size": 15, "font-weight": 600 });
+  const badges = items.map((it, k) => { const b = txt(svg, 218, 42 + k * 46, "", { cls: "mono", "font-size": 13, "font-weight": 700 }); return b; });
+  const setBadges = (s, cls) => badges.forEach((b, k) => { b.textContent = s[k]; b.setAttribute("class", "mono " + cls[k]); });
+  return [
+    { cap: "Перший запуск. Кешу ще немає. Для кожного тексту рахуємо ключ: sha256(модель + текст).", do: () => rows.forEach((r, k) => r.h.textContent = items[k].h) },
+    { cap: "Шукаємо ключі в кеші — жодного немає (✗). Усі тексти йдуть у модель.", do: () => { setBadges(items.map(() => "✗"), items.map(() => "bad")); rows.forEach((r, k) => move(r, 0, 0)); } },
+    { cap: "Модель векторизує їх, і вектори записуються в кеш за ключем.", do: () => { entries.forEach(e => show(e)); counter.textContent = "embedded now: 69  (перший запуск)"; } },
+    { cap: "Другий запуск: ключі ті самі, усі знайдені в кеші (✓). Модель не викликається взагалі.", do: () => { setBadges(items.map(() => "✓"), items.map(() => "ok")); counter.textContent = "embedded now: 0  (rest from cache)"; } },
+    { cap: "Змінили текст одного чанка → змінився його хеш → лише він іде в модель. Так само, якщо змінити модель: ключ інший, кеш промахується.", do: () => { const s = items.map(() => "✓"); s[2] = "✗"; const c = items.map(() => "ok"); c[2] = "bad"; setBadges(s, c); rows[2].h.textContent = "9f3c01a7b2"; counter.textContent = "embedded now: 1"; } },
+  ];
+}
+
+/* ---------- TODO 3 ---------- */
+function demoT3(svg) {
+  const cards = D.cards.map((c, k) => { const r = g(svg); const y = 24 + k * 84; rect(r, 12, y, 230, 70, "box", 9);
+    el("rect", { x: 12, y, width: 6, height: 70, rx: 3, fill: colorOf(c.chunk_id.split("/")[0]) }, r);
+    txt(r, 26, y + 20, cut(short(c.chunk_id), 28), { cls: "mono", "font-size": 11, "font-weight": 600 });
+    txt(r, 26, y + 38, cut(c.section || "—", 30), { "font-size": 11, cls: "muted" });
+    txt(r, 26, y + 56, "access: " + c.access.join(", "), { cls: "mono", "font-size": 10, fill: c.access.includes("finance") ? "var(--bad)" : "" });
+    return r; });
+  const col = g(svg); show(col, false);
+  rect(col, 300, 20, 328, 330, "box", 12);
+  txt(col, 316, 44, "collection: northwind", { cls: "mono", "font-size": 12, "font-weight": 600 });
+  txt(col, 316, 62, "size=384 · distance=COSINE", { cls: "muted mono", "font-size": 11 });
+  ["id", "vector", "payload"].forEach((h, k) => txt(col, [316, 352, 470][k], 88, h, { cls: "muted mono", "font-size": 10 }));
+  const points = D.cards.map((c, k) => { const p = g(svg); const y = 100 + k * 46; rect(p, 310, y, 308, 38, "box", 7);
+    txt(p, 318, y + 23, String([12, 17, 4, 0][k]), { cls: "mono", "font-size": 11 });
+    for (let j = 0; j < 12; j++) el("rect", { x: 350 + j * 9, y: y + 12, width: 7, height: 14, rx: 1, fill: colorOf(c.chunk_id.split("/")[0]), opacity: .25 + ((j * 37 + k * 11) % 10) / 14 }, p);
+    txt(p, 470, y + 23, cut("{chunk_id, section, access, text…}", 26), { cls: "mono", "font-size": 10 });
+    show(p, false); return p; });
+  const total = txt(svg, 316, 340, "", { cls: "mono", "font-size": 13, "font-weight": 600 });
+  return [
+    { cap: "Чанки з метаданими: джерело, розділ, хто може читати.", do: () => {} },
+    { cap: "create_collection: порожня колекція, у якої вектори по 384 числа і метрика cosine.", do: () => show(col) },
+    ...D.cards.map((c, k) => ({ cap: k === 0 ? "upsert: кожна точка = id + вектор + payload (увесь чанк). Payload повернеться разом з результатом пошуку." : `Точка ${k + 1}: ${short(c.chunk_id)}${c.access.includes("finance") ? " — з access: finance, це знадобиться в TODO 8." : "."}`, t: 1300,
+      do: () => { cards[k].style.opacity = .35; show(points[k]); } })),
+    { cap: "Так для всіх 69 чанків. Перевірка 3: count = 69 і в payload є chunk_id.", do: () => total.textContent = "points: 69" },
+  ];
+}
+
+/* ---------- scatter helper ---------- */
+function scatter(svg, box, opts = {}) {
+  const P = D.points, xs = P.map(p => p.xy[0]), ys = P.map(p => p.xy[1]);
+  const allx = xs.concat(Object.values(D.qpoints).map(q => q[0])), ally = ys.concat(Object.values(D.qpoints).map(q => q[1]));
+  const [x0, x1, y0, y1] = [Math.min(...allx), Math.max(...allx), Math.min(...ally), Math.max(...ally)];
+  const sx = x => box.x + 10 + (x - x0) / (x1 - x0) * (box.w - 20), sy = y => box.y + 10 + (y1 - y) / (y1 - y0) * (box.h - 20);
+  rect(svg, box.x, box.y, box.w, box.h, "box", 10);
+  const dots = {};
+  P.forEach(p => { dots[p.id] = el("circle", { cx: sx(p.xy[0]), cy: sy(p.xy[1]), r: 4.2, fill: colorOf(p.src), cls: "anim", opacity: .85 }, svg); });
+  const legend = g(svg, "");
+  Object.entries(SRC).forEach(([k, v], i) => { el("circle", { cx: box.x + 14 + (i % 3) * 92, cy: box.y + box.h + 14 + Math.floor(i / 3) * 16, r: 4, fill: colorOf(k) }, legend); txt(legend, box.x + 22 + (i % 3) * 92, box.y + box.h + 18 + Math.floor(i / 3) * 16, v, { "font-size": 10, cls: "muted" }); });
+  return { sx, sy, dots };
+}
+
+/* ---------- TODO 4 ---------- */
+function demoT4(svg) {
+  const sc = scatter(svg, { x: 10, y: 10, w: 330, h: 320 });
+  const q = D.qpoints.q01, qx = sc.sx(q[0]), qy = sc.sy(q[1]);
+  const star = g(svg); el("circle", { cx: qx, cy: qy, r: 9, fill: "var(--ink)" }, star); txt(star, qx - 3.5, qy + 4, "?", { cls: "t-white", "font-size": 11, "font-weight": 700, style: "fill:var(--bg)" }); show(star, false);
+  const qlabel = g(svg); rect(qlabel, 352, 10, 278, 52, "boxdark", 9); txt(qlabel, 364, 32, "Запит:", { cls: "t-white mono", "font-size": 11 }); txt(qlabel, 364, 50, cut(D.todo4.q, 44), { cls: "t-white", "font-size": 12 }); show(qlabel, false);
+  const hits = D.todo4.hits, rel = D.todo4.relevant;
+  const lines = hits.map(h => { const p = D.points.find(p => p.id === h.id); return el("line", { x1: qx, y1: qy, x2: sc.sx(p.xy[0]), y2: sc.sy(p.xy[1]), "stroke-width": 1.5, cls: "anim s-acc hide" }, svg); });
+  const list = hits.map((h, k) => { const r = g(svg); const y = 78 + k * 48; const ok = rel.includes(h.id);
+    rect(r, 352, y, 278, 40, "box", 8); txt(r, 362, y + 17, `${k + 1}. ${cut(h.label, 26)}`, { "font-size": 12, "font-weight": 600 });
+    txt(r, 362, y + 33, short(h.id), { cls: "muted mono", "font-size": 10 }); const s = txt(r, 590, y + 25, h.score.toFixed(3), { cls: "mono " + (ok ? "ok" : ""), "font-size": 12, "font-weight": ok ? 700 : 400 });
+    r.ok = ok; show(r, false); return r; });
+  const mark = txt(svg, 352, 340, "", { "font-size": 12, cls: "ok" });
+  return [
+    { cap: "Усі 69 чанків у просторі змісту (PCA-проєкція справжніх векторів). Близькі за змістом розділи лежать поруч, колір — документ.", do: () => {} },
+    { cap: "Запит векторизуємо тією самою моделлю — він стає ще однією точкою в цьому просторі.", do: () => { show(star); show(qlabel); } },
+    { cap: "Qdrant рахує cosine з кожним вектором (у 384 вимірах) і бере 5 найближчих.", do: () => { lines.forEach(l => show(l)); D.points.forEach(p => sc.dots[p.id].setAttribute("opacity", hits.some(h => h.id === p.id) ? 1 : .2)); } },
+    { cap: "Повертає список: payload кожної точки + score. Усі п'ять — з політики віддаленої роботи.", do: () => list.forEach(r => show(r)), t: 2600 },
+    { cap: "Правильний чанк (2. Eligibility) — на 2-му місці зі скором 0.467; перший має 0.478. Він у top-5, тож для recall це успіх, а для MRR дає 1/2.", do: () => { mark.textContent = "✓ правильний: позиція 2 → у top-5"; } },
+  ];
+}
+
+/* ---------- TODO 5 ---------- */
+function demoT5(svg) {
+  const R = D.ranks;
+  const colX = [14, 60, 400, 470, 560];
+  ["#", "питання", "тип", "позиція", "1/позиція"].forEach((h, k) => txt(svg, colX[k], 22, h, { cls: "muted mono", "font-size": 10 }));
+  const rows = R.map((r, k) => { const y = 38 + k * 19; const row = g(svg);
+    txt(row, colX[0], y, r.id, { cls: "mono", "font-size": 10 }); txt(row, colX[1], y, cut(r.q, 50), { "font-size": 10.5 }); txt(row, colX[2], y, r.kind, { cls: "muted mono", "font-size": 9.5 });
+    row.pos = txt(row, colX[3], y, "", { cls: "mono", "font-size": 11, "font-weight": 600 }); row.rr = txt(row, colX[4], y, "", { cls: "mono", "font-size": 11 }); return row; });
+  const tot = g(svg, ""); rect(tot, 14, 348, 612, 28, "boxdark", 8); const tt = txt(tot, 26, 367, "recall@5 = 0/16   MRR = 0.00", { cls: "t-white mono", "font-size": 13, "font-weight": 600 });
+  let found = 0, sum = 0;
+  const steps = [{ cap: "16 питань з відомими правильними чанками. Для кожного беремо top-5 векторного пошуку і шукаємо позицію першого правильного.", do: () => {} }];
+  const chunks = [[0, 4], [4, 8], [8, 12], [12, 16]];
+  chunks.forEach(([a, b], ci) => steps.push({ cap: ci === 2 ? "q10 «agreement BV-2013-02» — правильного чанка немає в top-5: 0 у MRR і пропуск у recall. Це сліпа зона векторного пошуку, її закриє BM25 (TODO 6)." : `Питання ${a + 1}–${b}: позиція → внесок 1/позиція. Перше місце дає 1, друге 0.5, третє 0.33.`, t: 2600,
+    do: () => { for (let k = a; k < b; k++) { const r = R[k]; const row = rows[k];
+      if (r.rank) { found++; sum += 1 / r.rank; row.pos.textContent = r.rank; row.pos.setAttribute("class", "mono ok"); row.rr.textContent = (1 / r.rank).toFixed(2); }
+      else { row.pos.textContent = "—"; row.pos.setAttribute("class", "mono bad"); row.rr.textContent = "0"; } }
+      tt.textContent = `recall@5 = ${found}/16 = ${(found / 16).toFixed(2)}   MRR = ${sum.toFixed(2)} / 16 = ${(sum / 16).toFixed(2)}`; } }));
+  steps.push({ cap: "Підсумок для vector: recall@5 = 0.94 (15 з 16) і MRR = 0.76. Ці дві цифри будемо порівнювати для кожної конфігурації.", do: () => {} });
+  return steps;
+}
+
+/* ---------- TODO 6 ---------- */
+function demoT6(svg) {
+  const t = D.todo6;
+  const q = g(svg, ""); rect(q, 12, 12, 616, 40, "boxdark", 9); txt(q, 24, 37, "Запит: " + t.q, { cls: "t-white mono", "font-size": 13 });
+  const toks = t.tokens.map((tk, k) => { const c = g(svg); rect(c, 12 + k * 100, 66, 90, 30, "box", 15); txt(c, 24 + k * 100, 86, tk, { cls: "mono", "font-size": 12, "font-weight": 600 }); show(c, false); return c; });
+  const maxIdf = 4.2;
+  const idf = t.tokens.map((tk, k) => { const b = g(svg); const h = t.idf[tk] / maxIdf * 50; el("rect", { x: 30 + k * 100, y: 160 - h, width: 50, height: h, rx: 3, cls: "acc" }, b); txt(b, 30 + k * 100, 175, "IDF " + t.idf[tk], { cls: "mono", "font-size": 10 }); show(b, false); return b; });
+  const idfNote = txt(svg, 420, 120, "", { "font-size": 11, cls: "muted" });
+  const snip = g(svg); rect(snip, 12, 188, 616, 44, "box", 9);
+  const st = el("text", { x: 22, y: 215, "font-size": 12 }, snip);
+  const parts = ["… 2 Agreed with the works council, see ", "agreement", " ", "BV", "-", "2013", "-", "02", "."];
+  const hl = [1, 3, 5, 7];
+  const spans = parts.map((p, k) => el("tspan", { cls: hl.includes(k) ? "anim" : "" }, st, p));
+  show(snip, false);
+  const lists = g(svg); show(lists, false);
+  txt(lists, 14, 254, "BM25 top-4", { cls: "muted mono", "font-size": 11 }); txt(lists, 330, 254, "vector top-4 (TODO 4)", { cls: "muted mono", "font-size": 11 });
+  const bm = t.bm25.slice(0, 4), vec = t.vector.slice(0, 4), target = "operations/legacy_warehouse_manual_rev7.pdf#16";
+  bm.forEach((h, k) => { const y = 264 + k * 27; const ok = h.id === target; el("rect", { x: 14, y, width: 60 + h.score / 13 * 170, height: 20, rx: 4, fill: ok ? "var(--ok)" : "var(--line)" }, lists); txt(lists, 20, y + 14, cut(h.label, 26), { "font-size": 10.5, style: ok ? "fill:#fff" : "" }); txt(lists, 250, y + 14, h.score.toFixed(1), { cls: "mono", "font-size": 10.5 }); });
+  vec.forEach((h, k) => { const y = 264 + k * 27; el("rect", { x: 330, y, width: 60 + h.score / .4 * 170, height: 20, rx: 4, fill: "var(--line)" }, lists); txt(lists, 336, y + 14, cut(h.label, 26), { "font-size": 10.5 }); txt(lists, 600, y + 14, h.score.toFixed(2), { cls: "mono", "font-size": 10.5 }); });
+  const miss = txt(svg, 330, 376, "", { cls: "bad", "font-size": 11.5, "font-weight": 600 });
+  return [
+    { cap: "Запит з кодом угоди. Векторний пошук його не знайшов — подивимось, як справиться BM25.", do: () => {} },
+    { cap: "Токенізація: текст → слова в нижньому регістрі. «BV-2013-02» розпадається на bv, 2013, 02.", do: () => toks.forEach(c => show(c)) },
+    { cap: "Кожне слово має вагу IDF: що рідше слово в корпусі, то вона більша. «bv» трапляється лише в одному з 69 чанків — найбільша вага.", do: () => { idf.forEach(b => show(b)); idfNote.textContent = "рідше слово → більша вага"; } },
+    { cap: "Чанк 6.3 Productivity містить усі чотири слова — у виносці, яку PDF приклеїв у кінець сторінки.", do: () => { show(snip); hl.forEach(k => spans[k].setAttribute("style", "fill:var(--ok);font-weight:700")); } },
+    { cap: "BM25: цей чанк перший зі скором 13.0, з великим відривом. Векторний top-4 — абревіатури, українська інструкція, політики: правильного серед них немає.", do: () => { show(lists); miss.textContent = "✗ vector: правильного чанка немає"; }, t: 3000 },
+  ];
+}
+
+/* ---------- TODO 7 ---------- */
+function demoT7(svg) {
+  const t = D.todo7, target = t.relevant[0];
+  const V = t.vector.slice(0, 6), B = t.bm25.slice(0, 4);
+  txt(svg, 14, 22, "vector", { cls: "muted mono", "font-size": 11 }); txt(svg, 236, 22, "bm25", { cls: "muted mono", "font-size": 11 }); const fh = txt(svg, 452, 22, "", { cls: "muted mono", "font-size": 11 });
+  const pos = {};
+  const card = (h, k, x, list) => { const r = g(svg); const y = 32 + k * 40; const ok = h.id === target; rect(r, x, y, 190, 32, "box", 7);
+    txt(r, x + 8, y + 20, `${k + 1}. ${cut(h.label, 17)}`, { "font-size": 11, "font-weight": ok ? 700 : 400, style: ok ? "fill:var(--ok)" : "" });
+    r.contrib = txt(r, x + 150, y + 20, "", { cls: "mono acc", "font-size": 10 });
+    (pos[h.id] = pos[h.id] || []).push([x, y + 16, r, list, k + 1]); return r; };
+  const vc = V.map((h, k) => card(h, k, 14, "v")), bc = B.map((h, k) => card(h, k, 236, "b"));
+  const links = g(svg, "");
+  Object.values(pos).filter(p => p.length > 1).forEach(p => el("path", { d: `M${p[0][0] + 190},${p[0][1]} C${p[0][0] + 205},${p[0][1]} ${p[1][0] - 15},${p[1][1]} ${p[1][0]},${p[1][1]}`, fill: "none", "stroke-width": 1.6, cls: "anim s-acc hide" }, links));
+  const F = t.fused.map((h, k) => { const r = g(svg); const y = 32 + k * 40; const ok = h.id === target; rect(r, 452, y, 178, 32, ok ? "box" : "box", 7);
+    txt(r, 460, y + 20, `${k + 1}. ${cut(h.label, 18)}`, { "font-size": 11, "font-weight": ok ? 700 : 400, style: ok ? "fill:var(--ok)" : "" });
+    txt(r, 592, y + 20, h.score.toFixed(4), { cls: "mono", "font-size": 9.5 }); show(r, false); return r; });
+  const formula = g(svg, ""); rect(formula, 14, 300, 616, 64, "boxdark", 10);
+  const f1 = txt(formula, 28, 326, "score(чанк) = Σ 1 / (60 + rank)", { cls: "t-white mono", "font-size": 13 });
+  const f2 = txt(formula, 28, 348, "", { cls: "t-white mono", "font-size": 11.5 });
+  return [
+    { cap: "Два списки для «agreement BV-2013-02». Скори в різних шкалах (cosine 0.36 проти BM25 13.0) — складати їх не можна.", do: () => {} },
+    { cap: "Знаходимо чанки, які є в обох списках.", do: () => [...links.children].forEach(l => show(l)) },
+    { cap: "Кожна позиція дає внесок 1/(60 + rank): перше місце — 1/61 ≈ 0.0164, друге — 1/62 ≈ 0.0161.", do: () => { Object.values(pos).flat().forEach(([x, y, r, l, rank]) => r.contrib.textContent = (1 / (60 + rank)).toFixed(4)); f2.textContent = "рахуємо лише ранги, тому шкала скорів не важить"; }, t: 2600 },
+    { cap: "Сумуємо внески і сортуємо. Чанки, знайдені обома пошуками, отримують два доданки й ідуть угору.", do: () => { fh.textContent = "hybrid (RRF)"; F.forEach(r => show(r)); f2.textContent = "safety_ua#2: 1/62 + 1/62 = 0.0323 → №1"; }, t: 2600 },
+    { cap: "Правильний чанк (6.3 Productivity) є лише в BM25 на 1-му місці → 1/61 = 0.0164 → №3 у hybrid. Він у top-5 — пропуск векторного пошуку виправлено. Порядок покращить reranker.", do: () => { f2.textContent = "manual#16: тільки bm25 rank 1 → 1/61 = 0.0164 → №3 у top-5 ✓"; } },
+  ];
+}
+
+/* ---------- TODO 8 ---------- */
+function demoT8(svg) {
+  const t = D.todo8;
+  const q = g(svg, ""); rect(q, 12, 12, 616, 40, "boxdark", 9); txt(q, 24, 37, "Запит: " + t.q, { cls: "t-white mono", "font-size": 12.5 });
+  const user = g(svg, ""); rect(user, 12, 64, 200, 34, "box", 17); const ut = txt(user, 26, 86, "користувач: all_employees", { cls: "mono", "font-size": 11.5 });
+  const col = (title, x, list, mode) => { const c = g(svg); txt(c, x, 124, title, { cls: "muted mono", "font-size": 11 });
+    c.items = list.map((h, k) => { const r = g(c); const y = 134 + k * 44; const fin = h.access.includes("finance"); rect(r, x, y, 196, 36, "box", 7);
+      el("rect", { x, y, width: 5, height: 36, rx: 2, fill: colorOf(h.id.split("/")[0]) }, r);
+      txt(r, x + 12, y + 16, cut(h.label, 26), { "font-size": 11, "font-weight": 600 });
+      txt(r, x + 12, y + 30, "access: " + h.access.join(","), { cls: "mono " + (fin ? "bad" : "muted"), "font-size": 9.5 }); r.fin = fin; return r; });
+    show(c, false); return c; };
+  const no = col("без фільтра", 12, t.nofilter);
+  const post = col("post-filter (після пошуку)", 222, t.nofilter);
+  const pre = col("pre-filter (TODO 8)", 432, t.all);
+  const note = txt(svg, 12, 300, "", { "font-size": 12 });
+  const note2 = txt(svg, 12, 322, "", { "font-size": 12 });
+  const fin = g(svg); rect(fin, 432, 300, 196, 60, "box", 8); txt(fin, 442, 320, "користувач: finance", { cls: "mono", "font-size": 11 }); txt(fin, 442, 344, "→ " + cut(t.finance[0].label, 22) + " №1", { cls: "ok", "font-size": 11.5, "font-weight": 600 }); show(fin, false);
+  return [
+    { cap: "Звичайний співробітник питає про фінанси. Фінзвіт за Q3 має access: [finance] — він не має його побачити.", do: () => {} },
+    { cap: "Без фільтра пошук чесно знаходить найрелевантніше — фінзвіт на 1-му місці. Витік: чанк піде в контекст моделі, і промпт «не показуй» це не виправить.", do: () => { show(no); no.items[0].querySelector("rect").setAttribute("style", "stroke:var(--bad);stroke-width:2"); note.textContent = "✗ без фільтра: конфіденційний чанк у результатах"; note.setAttribute("class", "bad"); } },
+    { cap: "Post-filter: взяли top-3, а заборонене викинули після. Тут лишилось 2 з 3. Якби всі 3 були фінансовими — користувач отримав би порожній результат, хоча дозволені релевантні чанки є.", do: () => { show(post); post.items[0].classList.add("hide"); note2.textContent = "△ post-filter: менше результатів, ніж k, аж до нуля"; note2.setAttribute("class", "") } , t: 2800 },
+    { cap: "Pre-filter (TODO 8): Qdrant шукає лише серед дозволених чанків — завжди повні 5 результатів, і жодного забороненого. BM25 фільтрує сам через allowed().", do: () => { show(pre); note.textContent = "✓ pre-filter: шукаємо лише серед дозволених"; note.setAttribute("class", "ok"); } },
+    { cap: "Той самий запит від користувача з групою finance — фінзвіт на 1-му місці. Перевірка 8 перевіряє обидва випадки.", do: () => show(fin) },
+  ];
+}
+
+/* ---------- TODO 9 ---------- */
+function demoT9(svg) {
+  const build = (data, x0) => {
+    const before = data.before.slice(0, 6), rel = data.relevant;
+    const items = {};
+    const make = (h, label) => { const r = g(svg); const ok = rel.includes(h.id); rect(r, 0, 0, 230, 30, "box", 7);
+      txt(r, 8, 19, cut(label, 24), { "font-size": 11, "font-weight": ok ? 700 : 400, style: ok ? "fill:var(--ok)" : "" });
+      r.sc = txt(r, 196, 19, "", { cls: "mono", "font-size": 10 }); items[h.id] = r; return r; };
+    before.forEach((h, k) => move(make(h, h.label), x0, 60 + k * 36));
+    const deeper = txt(svg, x0, 60 + 6 * 36 + 18, "… ще 14 кандидатів (№7–20)", { cls: "muted mono", "font-size": 10.5 });
+    data.after.slice(0, 5).forEach(h => { if (!items[h.id]) { const r = make(h, h.label); move(r, x0, 60 + 6 * 36 + 30); r.style.opacity = 0; } });
+    return { after: data.after, items, rel, deeper };
+  };
+  const head = g(svg, ""); rect(head, 12, 10, 616, 36, "boxdark", 9); const ht = txt(head, 24, 33, "q10: «agreement BV-2013-02» — hybrid top-6", { cls: "t-white mono", "font-size": 12 });
+  const enc = g(svg, ""); rect(enc, 270, 120, 112, 90, "boxdark", 12); txt(enc, 282, 150, "Cross-", { cls: "t-white", "font-weight": 600 }); txt(enc, 282, 168, "encoder", { cls: "t-white", "font-weight": 600 }); txt(enc, 282, 192, "запит + чанк", { cls: "t-white mono", "font-size": 10 });
+  const lat = txt(svg, 12, 300, "", { cls: "mono", "font-size": 12 });
+  const res = txt(svg, 12, 324, "", { "font-size": 12.5, "font-weight": 600 });
+  let A = build(D.todo9.q10, 30), Bq;
+  const reorder = (S, x) => {
+    const top = S.after.slice(0, 5).map(h => h.id);
+    Object.entries(S.items).forEach(([id, r]) => { if (!top.includes(id)) r.style.opacity = .25; });
+    S.after.slice(0, 5).forEach((h, k) => { const r = S.items[h.id]; r.style.opacity = 1; move(r, x, 60 + k * 36); r.sc.textContent = h.score.toFixed(1); });
+  };
+  const hideAll = S => { Object.values(S.items).forEach(r => { r.style.opacity = 0; }); S.deeper.style.opacity = 0; };
+  return [
+    { cap: "Hybrid дав кандидатів для q10. Правильний чанк (6.3 Productivity) — лише №3. Блідими лишаться ті, що після reranker випадуть з top-5.", do: () => {} },
+    { cap: "Reranker читає запит і кожного кандидата разом і ставить скор кожній парі. Це окремий запуск моделі на кожну пару — тому лише для top-20.", do: () => Object.values(A.items).forEach((r, k) => { r.sc.textContent = "…"; }), t: 2000 },
+    { cap: "Сортуємо за новим скором: правильний чанк — №1 з великим відривом (3.7 проти −8.4). MRR для цього питання: 1/3 → 1.", do: () => { reorder(A, 400); lat.textContent = "час на запит: hybrid ~3 мс → hybrid + rerank — у десятки-сотні разів довше"; } , t: 2800 },
+    { cap: "Тепер українське питання q12 «Скільки днів на тиждень можна працювати віддалено?». У hybrid правильний чанк (2. Eligibility) — №3.", do: () => { hideAll(A); ht.textContent = "q12: «Скільки днів на тиждень можна працювати віддалено?»"; Bq = build(D.todo9.q12, 30); lat.textContent = ""; res.textContent = ""; } },
+    { cap: "Reranker ms-marco навчений лише на англійській. Він підняв угору чанки з позицій нижче 7-ї, а правильний виштовхнув з top-5. Recall падає з 1.00 до 0.94.", do: () => { reorder(Bq, 400); const r = Bq.items[Bq.rel[0]]; const k = Bq.after.findIndex(h => h.id === Bq.rel[0]); if (k < 0 || k > 4) { r.style.opacity = 1; move(r, 400, 60 + 5 * 36 + 8); r.querySelector("rect").setAttribute("style", "stroke:var(--bad);stroke-width:2"); } res.textContent = "✗ правильний чанк випав з top-5 — потрібен багатомовний reranker"; res.setAttribute("class", "bad"); }, t: 3200 },
+  ];
+}
+
+/* ---------- TODO 10 ---------- */
+function demoT10(svg) {
+  const P = D.pairs;
+  txt(svg, 14, 24, "5 найсхожіших пар з різних документів", { cls: "muted mono", "font-size": 11 });
+  const rows = P.map((p, k) => { const r = g(svg); const y = 36 + k * 58; rect(r, 12, y, 616, 48, "box", 8);
+    txt(r, 22, y + 20, cut(p.la, 28), { "font-size": 12, "font-weight": 600 }); txt(r, 22, y + 38, short(p.a), { cls: "muted mono", "font-size": 9.5 });
+    txt(r, 250, y + 28, "≈", { "font-size": 16, cls: "muted" });
+    txt(r, 272, y + 20, cut(p.lb, 28), { "font-size": 12, "font-weight": 600 }); txt(r, 272, y + 38, short(p.b), { cls: "muted mono", "font-size": 9.5 });
+    r.v = txt(r, 520, y + 30, "", { cls: "mono", "font-size": 14, "font-weight": 700 }); return r; });
+  const note = txt(svg, 14, 340, "", { "font-size": 12.5 });
+  const note2 = txt(svg, 14, 362, "", { "font-size": 12 });
+  return [
+    { cap: "Порівнюємо кожен чанк з кожним, але лише з різних документів, і беремо найсхожіші пари.", do: () => {} },
+    { cap: "Перша спроба — скалярний добуток a·b. Виходить 8.96… Косинус не може бути більшим за 1: щось не так.", do: () => { rows.forEach((r, k) => { r.v.textContent = "a·b = " + P[k].dot.toFixed(2); r.v.setAttribute("class", "mono bad"); }); note.textContent = "✗ модель повертає ненормалізовані вектори: довжина ≠ 1"; note.setAttribute("class", "bad"); } },
+    { cap: "Ділимо на довжини векторів: cos = a·b / (|a|·|b|). Тепер значення від −1 до 1. Функція cosine() уже є у файлі.", do: () => { rows.forEach((r, k) => { r.v.textContent = "cos = " + P[k].cos.toFixed(3); r.v.setAttribute("class", "mono ok"); }); note.textContent = "✓ cosine: 0.66, 0.64, 0.62 …"; note.setAttribute("class", "ok"); } },
+    { cap: "Що знайшли: «remote після випробувального» ≈ правило remote; онбординг «VPN» ≈ інструкція VPN; українська інструкція з безпеки ≈ «C.3 Охорона праці» з регламенту. Не дублі, а пов'язаний зміст — поріг дубля підбирають на своїх даних.", do: () => { note2.textContent = "0.66 — пов'язані теми, не копії; для дублів поріг вищий"; } , t: 3200 },
+  ];
+}
+
+const DEMOS = { overview: demoOverview, t1: demoT1, t2: demoT2, t3: demoT3, t4: demoT4, t5: demoT5, t6: demoT6, t7: demoT7, t8: demoT8, t9: demoT9, t10: demoT10 };
+document.querySelectorAll(".demo").forEach(host => player(host, DEMOS[host.dataset.demo]));
+
+/* results table */
+(() => {
+  const t = document.getElementById("restable");
+  const why = { vector: "не знаходить код BV-2013-02", bm25: "не розуміє перефразу й української", hybrid: "знаходить усе", "hybrid+rerank": "краще сортує, але повільніше і губить q12" };
+  t.innerHTML = "<tr><th>Конфігурація</th><th>recall@5</th><th>MRR</th><th>мс / запит</th><th>Пропущено</th><th>Чому</th></tr>" +
+    Object.entries(D.results).map(([n, r]) => `<tr><td><code>${n}</code></td><td>${r.recall.toFixed(2)}</td><td>${r.mrr.toFixed(2)}</td><td>${Math.round(r.ms)}</td><td>${r.misses.join(" ") || "—"}</td><td>${why[n]}</td></tr>`).join("");
+})();
+</script>
+</body>
+</html>
