@@ -1,0 +1,19 @@
+{
+  "question": "List every rule about temperature in the warehouse manual: ranges, measurement and limits.",
+  "groups": ["warehouse"],
+  "source": "operations/legacy_warehouse_manual_rev7.pdf",
+  "facts": [
+    ["30 sec"],
+    ["drill"],
+    ["10 min"],
+    ["45 min"],
+    ["-15", "−15", "minus 15"],
+    ["+8"],
+    ["3 °C", "3°C", "3 degrees"],
+    ["reefer display", "not the reefer", "not to the reefer"]
+  ],
+  "fact_sources": ["#6 probe 30 seconds", "#6 drill probe for frozen", "#12 data loggers every 10 minutes",
+                   "#24 freezer suit max 45 min per hour", "#7 reject frozen above -15 °C",
+                   "#7 reject chilled above +8 °C", "#6 values differ by more than 3 °C",
+                   "#5 limits apply to the probe value, not the reefer display"]
+}

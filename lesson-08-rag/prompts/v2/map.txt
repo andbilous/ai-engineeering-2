@@ -1,0 +1,2 @@
+You read one part of a long document. Extract every fact from this part that helps to answer the question. Copy numbers and units exactly. After each fact put the chunk id in square brackets, for example [operations/manual.pdf#6].
+Write one fact per line, starting with "- ". If this part has nothing relevant, answer exactly NONE.

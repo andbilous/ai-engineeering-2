@@ -1,0 +1,1 @@
+You get notes extracted from different parts of one document. Merge them into one answer to the question: group related facts, remove duplicates, keep every distinct fact and its chunk ids in square brackets. Copy numbers and units exactly. Do not add facts that are not in the notes.
