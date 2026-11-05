@@ -6,7 +6,7 @@ Usage:
     python starter/rag.py --groups finance "operating costs in Q3"
     python starter/rag.py --prompt v1             # run with another prompt version (TODO 6)
     python starter/rag.py --sweep                 # k = 3 / 5 / 10: quality, tokens, cost, latency (TODO 7)
-    python starter/rag.py --summary               # map-reduce over a whole document vs top-k (TODO 8)
+    python starter/rag.py --summary               # top-5 vs whole document vs map-reduce (TODO 8)
     python starter/rag.py --no-condense           # follow-up questions without rewriting (TODO 9)
 """
 import argparse
@@ -213,31 +213,62 @@ def windows(chunks: list[dict], budget: int) -> list[list[dict]]:
 #   Map: each window of the document -> the relevant facts with [chunk_id], or NONE.
 #   Reduce: one call merges the facts into the final answer.
 #   Done when: one map call per window, NONE results are dropped, one reduce call (check 8);
-#   --summary shows the coverage of facts for top-k and for map-reduce.
+#   --summary: map-reduce finds more of the 8 facts than top-5 AND than the whole document in one call.
 def map_reduce(llm: LLM, question: str, chunks: list[dict], budget: int = MAP_BUDGET) -> str:
     """TODO 8: map over windows(chunks, budget) with prompts map.txt, then reduce with reduce.txt."""
     raise NotImplementedError("TODO 8: map_reduce")
 
 
+def whole_document(llm: LLM, question: str, chunks: list[dict]) -> str:
+    """Ready, not a TODO: the whole document in ONE call with the same map prompt. The baseline map-reduce must beat:
+    the manual is ~4.5k tokens and fits the window, so why split it at all? Run --summary and compare."""
+    text = "\n\n".join(f"[{c['chunk_id']}] {c['section']}\n{c['text']}" for c in chunks)
+    return llm.chat([{"role": "system", "content": load_prompt(HELPERS, "map")},
+                     {"role": "user", "content": f"<document>\n{text}\n</document>\n\nQuestion: {question}"}],
+                    max_tokens=1500).strip()
+
+
+SUMMARY_RUNS = 3   # the model is not stable on long lists even at temperature 0, so each method runs 3 times
+
+
 def summary_demo(llm: LLM, retriever):
     task = json.loads(SUMMARY_TASK.read_text(encoding="utf-8"))
     doc = [c for c in load_chunks() if c["source"] == task["source"]]
-    print(f"Question: {task['question']}\nDocument: {task['source']}, {len(doc)} chunks, "
+    q, facts = task["question"], task["facts"]
+    print(f"Question: {q}\nDocument: {task['source']}, {len(doc)} chunks, "
           f"{sum(count_tokens(c['text']) for c in doc)} tokens, {len(windows(doc, MAP_BUDGET))} map windows\n")
+    methods = [("top-5", lambda: rag(llm, retriever, q, task["groups"])["answer"]),
+               ("whole doc", lambda: whole_document(llm, q, doc)),
+               ("map-reduce", lambda: map_reduce(llm, q, doc))]
     rows = {}
-    for name, fn in [("top-5", lambda: rag(llm, retriever, task["question"], task["groups"])["answer"]),
-                     ("map-reduce", lambda: map_reduce(llm, task["question"], doc))]:
-        c0, t0, o0, s = llm.calls, llm.tokens_in, llm.tokens_out, time.perf_counter()
-        text = fn()
-        hit = [i for i, f in enumerate(task["facts"], 1) if has(text, f)]
-        rows[name] = {"facts": len(hit), "of": len(task["facts"]), "calls": llm.calls - c0,
-                      "tokens_in": llm.tokens_in - t0,
-                      "usd": ((llm.tokens_in - t0) * PRICE_IN + (llm.tokens_out - o0) * PRICE_OUT) / 1e6,
-                      "s": time.perf_counter() - s, "answer": text}
-        print(f"== {name}\n{text}\n")
-    print(f"{'method':<12}{'facts':>8}{'calls':>7}{'tokens in':>11}{'$':>10}{'s':>7}")
-    for name, r in rows.items():
-        print(f"{name:<12}{r['facts']:>5}/{r['of']}{r['calls']:>7}{r['tokens_in']:>11}{r['usd']:>10.5f}{r['s']:>7.1f}")
+    for name, fn in methods:
+        runs = []
+        for _ in range(SUMMARY_RUNS):
+            c0, t0, o0, s = llm.calls, llm.tokens_in, llm.tokens_out, time.perf_counter()
+            try:
+                text = fn()
+            except NotImplementedError as e:
+                print(f"== {name}: {e}\n")
+                break
+            runs.append({"hit": [i for i, f in enumerate(facts, 1) if has(text, f)], "calls": llm.calls - c0,
+                         "tokens_in": llm.tokens_in - t0, "s": time.perf_counter() - s, "answer": text,
+                         "usd": ((llm.tokens_in - t0) * PRICE_IN + (llm.tokens_out - o0) * PRICE_OUT) / 1e6})
+        if runs:
+            rows[name] = runs
+            print(f"== {name} (run 1 of {len(runs)})\n{runs[0]['answer']}\n")
+    if not rows:
+        return
+    names = list(rows)
+    print(f"{'fact (source chunk)':<44}" + "".join(f"{n:>12}" for n in names))
+    for i, label in enumerate(task["fact_sources"], 1):
+        print(f"{label[:43]:<44}" + "".join(f"{sum(i in r['hit'] for r in rows[n])}/{len(rows[n])}".rjust(12)
+                                            for n in names))
+    avg = lambda n, key: sum(r[key] for r in rows[n]) / len(rows[n])
+    print(f"{'facts found, per run':<44}" + "".join(
+        (" ".join(str(len(r["hit"])) for r in rows[n]) + f" of {len(facts)}").rjust(12) for n in names))
+    for label, key, fmt in [("calls", "calls", "{:.0f}"), ("tokens in", "tokens_in", "{:.0f}"),
+                            ("$ per question", "usd", "{:.5f}"), ("seconds", "s", "{:.1f}")]:
+        print(f"{label + ', average':<44}" + "".join(fmt.format(avg(n, key)).rjust(12) for n in names))
     OUT.mkdir(exist_ok=True)
     (OUT / "summary.json").write_text(json.dumps(rows, indent=2, ensure_ascii=False))
 
