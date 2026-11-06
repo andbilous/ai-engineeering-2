@@ -1,0 +1,39 @@
+# GitHub Actions job for evals. In your own project copy this file to .github/workflows/evals.yml
+# and add OPENROUTER_API_KEY in Settings -> Secrets and variables -> Actions.
+# It runs when a prompt, the testset or the RAG code changes, and fails the pull request
+# if the metrics drop below baseline.json (TODO 7).
+name: evals
+
+on:
+  pull_request:
+    paths:
+      - "prompts/**"
+      - "data/testset.json"
+      - "rag.py"
+      - "retrieval.py"
+      - "baseline.json"
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Offline checks (no key, no cost)
+        run: python starter/check.py
+      - name: Lint the testset
+        run: python starter/evals.py --lint
+      - name: Evals and the gate
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: python starter/evals.py --judge --gate
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-report
+          path: output/report-*.md

@@ -1,0 +1,10 @@
+You grade the answer of a company assistant against a reference answer written by a person who knows the documents.
+
+Find the key fact: the part of the reference that answers exactly what the question asks (a number, a time, a name, yes/no, "discontinued"). Other details in the reference, such as who approves or what else applies, are optional: the answer may leave them out.
+
+- "correct": the answer gives the key fact. Different wording, another language and extra details are fine, also details the reference does not mention, for example a second limit for another group of people.
+- "incorrect": the key fact is missing or different, or an extra detail contradicts the reference, for example a different reason for the same rule.
+- Saying that the information could not be found is incorrect whenever the reference gives an answer, also when that answer is "it was discontinued" or "it does not apply".
+- If the reference says the information is not in the documents, the answer is correct only if the assistant also says it could not find it.
+
+First write a short reason (one or two sentences) that names the key fact you compared, then the verdict.

@@ -1,0 +1,654 @@
+[
+ {
+  "id": "q01",
+  "kind": "paraphrase",
+  "groups": [
+   "all_employees"
+  ],
+  "question": "How many days a week can I work from home?",
+  "relevant": [
+   "policies/remote_work_policy_v2.docx#2"
+  ],
+  "must": [
+   [
+    "three",
+    "3"
+   ]
+  ],
+  "reference": "Up to three days per week, after the probation period."
+ },
+ {
+  "id": "q02",
+  "kind": "paraphrase",
+  "groups": [
+   "all_employees"
+  ],
+  "question": "My work laptop was stolen on a trip. What do I do?",
+  "relevant": [
+   "policies/remote_work_policy_v2.docx#5"
+  ],
+  "must": [
+   [
+    "service desk"
+   ],
+   [
+    "one hour",
+    "1 hour"
+   ]
+  ],
+  "reference": "Report it to the IT service desk within one hour."
+ },
+ {
+  "id": "q03",
+  "kind": "paraphrase",
+  "groups": [
+   "all_employees"
+  ],
+  "question": "How much can I spend on a hotel during a business trip?",
+  "relevant": [
+   "handbook/expense_policy.md#2"
+  ],
+  "must": [
+   [
+    "120"
+   ]
+  ],
+  "reference": "120 EUR per night, approved by the team lead."
+ },
+ {
+  "id": "q04",
+  "kind": "paraphrase",
+  "groups": [
+   "all_employees"
+  ],
+  "question": "Who helps a newcomer with everyday questions in the first month?",
+  "relevant": [
+   "handbook/onboarding.html#2"
+  ],
+  "must": [
+   [
+    "buddy"
+   ]
+  ],
+  "reference": "A buddy, an experienced colleague."
+ },
+ {
+  "id": "q05",
+  "kind": "paraphrase",
+  "groups": [
+   "all_employees",
+   "warehouse"
+  ],
+  "question": "Where do warehouse staff gather when the fire alarm goes off?",
+  "relevant": [
+   "operations/legacy_warehouse_manual_rev7.pdf#35"
+  ],
+  "must": [
+   [
+    "P2"
+   ]
+  ],
+  "reference": "At the assembly point, car park P2."
+ },
+ {
+  "id": "q06",
+  "kind": "exact",
+  "groups": [
+   "all_employees"
+  ],
+  "question": "Which VPN server is only for when the others fail?",
+  "relevant": [
+   "it/vpn_setup.docx#2"
+  ],
+  "must": [
+   [
+    "vpn-backup"
+   ]
+  ],
+  "reference": "vpn-backup.northwind.example in Frankfurt."
+ },
+ {
+  "id": "q07",
+  "kind": "exact",
+  "groups": [
+   "all_employees",
+   "warehouse"
+  ],
+  "question": "What does FEFO mean?",
+  "relevant": [
+   "operations/legacy_warehouse_manual_rev7.pdf#37",
+   "operations/legacy_warehouse_manual_rev7.pdf#10"
+  ],
+  "must": [
+   [
+    "first expired"
+   ]
+  ],
+  "reference": "First expired, first out."
+ },
+ {
+  "id": "q08",
+  "kind": "exact",
+  "groups": [
+   "all_employees",
+   "warehouse"
+  ],
+  "question": "What is reason code 14 used for?",
+  "relevant": [
+   "operations/legacy_warehouse_manual_rev7.pdf#6",
+   "operations/legacy_warehouse_manual_rev7.pdf#7"
+  ],
+  "must": [
+   [
+    "sacrificial",
+    "writ"
+   ]
+  ],
+  "reference": "A sacrificial carton written off after the drill probe check of frozen goods."
+ },
+ {
+  "id": "q09",
+  "kind": "exact",
+  "groups": [
+   "all_employees",
+   "warehouse"
+  ],
+  "question": "What is agreement BV-2013-02 about?",
+  "relevant": [
+   "operations/legacy_warehouse_manual_rev7.pdf#16"
+  ],
+  "must": [
+   [
+    "works council"
+   ]
+  ],
+  "reference": "An agreement with the works council: productivity figures may not be used alone for disciplinary decisions."
+ },
+ {
+  "id": "q10",
+  "kind": "exact",
+  "groups": [
+   "all_employees",
+   "warehouse"
+  ],
+  "question": "Who is on extension 240?",
+  "relevant": [
+   "operations/legacy_warehouse_manual_rev7.pdf#36"
+  ],
+  "must": [
+   [
+    "Meier"
+   ]
+  ],
+  "reference": "Dr. L. Meier, QA / pharma."
+ },
+ {
+  "id": "q11",
+  "kind": "ukrainian",
+  "groups": [
+   "all_employees"
+  ],
+  "question": "Скільки днів на тиждень можна працювати віддалено?",
+  "relevant": [
+   "policies/remote_work_policy_v2.docx#2"
+  ],
+  "must": [
+   [
+    "три",
+    "трьох",
+    "3",
+    "three"
+   ]
+  ],
+  "reference": "До трьох днів на тиждень після випробувального терміну."
+ },
+ {
+  "id": "q12",
+  "kind": "ukrainian",
+  "groups": [
+   "all_employees",
+   "warehouse"
+  ],
+  "question": "До котрої години Нова Пошта забирає посилки у Львові в будні?",
+  "relevant": [
+   "operations/legacy_warehouse_manual_rev7.pdf#40"
+  ],
+  "must": [
+   [
+    "17:00"
+   ]
+  ],
+  "reference": "До 17:00 у будні."
+ },
+ {
+  "id": "q13",
+  "kind": "ukrainian",
+  "groups": [
+   "all_employees",
+   "warehouse"
+  ],
+  "question": "Яку вагу можна піднімати одному на складі?",
+  "relevant": [
+   "legacy/warehouse_safety_ua.txt#1",
+   "operations/legacy_warehouse_manual_rev7.pdf#27"
+  ],
+  "must": [
+   [
+    "25"
+   ]
+  ],
+  "reference": "Рекомендований максимум для повторного піднімання: 25 кг для чоловіків і 15 кг для жінок; важче піднімають удвох або з допоміжним засобом."
+ },
+ {
+  "id": "q14",
+  "kind": "multi_chunk",
+  "groups": [
+   "all_employees"
+  ],
+  "question": "Can I claim money for a keyboard I use at home, and how do I submit the claim?",
+  "relevant": [
+   "handbook/expense_policy.md#1",
+   "policies/remote_work_policy_v2.docx#4",
+   "handbook/expense_policy.md#3"
+  ],
+  "must": [
+   [
+    "40"
+   ],
+   [
+    "receipt"
+   ]
+  ],
+  "reference": "Yes, up to 40 EUR per year; upload the receipt to the expense tool within 30 days."
+ },
+ {
+  "id": "q15",
+  "kind": "stale",
+  "groups": [
+   "all_employees",
+   "warehouse"
+  ],
+  "question": "What is the latest time to hand over parcels to DPD on a weekday?",
+  "relevant": [
+   "operations/legacy_warehouse_manual_rev7.pdf#42"
+  ],
+  "must": [
+   [
+    "17:15"
+   ]
+  ],
+  "reference": "17:15 (memo QMS-2017-04 replaced 16:30 from section 7.4)."
+ },
+ {
+  "id": "q16",
+  "kind": "stale",
+  "groups": [
+   "all_employees",
+   "warehouse"
+  ],
+  "question": "What is the weekday cut-off time for Raben groupage?",
+  "relevant": [
+   "operations/legacy_warehouse_manual_rev7.pdf#42"
+  ],
+  "must": [
+   [
+    "discontinued"
+   ]
+  ],
+  "reference": "Raben groupage was discontinued by memo QMS-2017-04."
+ },
+ {
+  "id": "q17",
+  "kind": "access",
+  "groups": [
+   "finance"
+  ],
+  "question": "What were the total operating costs in Q3?",
+  "relevant": [
+   "finance/q3_budget_summary.pdf#0"
+  ],
+  "must": [
+   [
+    "4.2"
+   ]
+  ],
+  "reference": "4.2 million EUR."
+ },
+ {
+  "id": "q18",
+  "kind": "no_answer",
+  "groups": [
+   "all_employees"
+  ],
+  "question": "What were the total operating costs in Q3?",
+  "relevant": [],
+  "reference": "Not in the documents this user may read.",
+  "must": []
+ },
+ {
+  "id": "q19",
+  "kind": "no_answer",
+  "groups": [
+   "all_employees"
+  ],
+  "question": "How many weeks of paid parental leave do employees get?",
+  "relevant": [],
+  "reference": "Not in the documents.",
+  "must": []
+ },
+ {
+  "id": "q20",
+  "kind": "no_answer",
+  "groups": [
+   "all_employees"
+  ],
+  "question": "What is the Wi-Fi password in the Kyiv office?",
+  "relevant": [],
+  "reference": "Not in the documents.",
+  "must": []
+ },
+ {
+  "id": "q21",
+  "kind": "no_answer",
+  "groups": [
+   "all_employees",
+   "warehouse"
+  ],
+  "question": "What is the cut-off time for UPS parcels?",
+  "relevant": [],
+  "reference": "Not in the documents: UPS is not among the carriers.",
+  "must": []
+ },
+ {
+  "id": "q22",
+  "kind": "followup",
+  "groups": [
+   "all_employees"
+  ],
+  "history": [
+   [
+    "Can I claim money for home office equipment?",
+    "Yes. Home office equipment such as a keyboard, mouse or headset can be claimed."
+   ]
+  ],
+  "question": "What is the yearly limit for that?",
+  "relevant": [
+   "handbook/expense_policy.md#1",
+   "policies/remote_work_policy_v2.docx#4"
+  ],
+  "must": [
+   [
+    "40"
+   ]
+  ],
+  "reference": "40 EUR per year."
+ },
+ {
+  "id": "q23",
+  "kind": "followup",
+  "groups": [
+   "all_employees",
+   "warehouse"
+  ],
+  "history": [
+   [
+    "Who is the QA contact at the Hamburg warehouse?",
+    "Dr. L. Meier, QA / pharma, extension 240."
+   ]
+  ],
+  "question": "And what is their e-mail?",
+  "relevant": [
+   "operations/legacy_warehouse_manual_rev7.pdf#36"
+  ],
+  "must": [
+   [
+    "qa@northwind.example"
+   ]
+  ],
+  "reference": "qa@northwind.example"
+ },
+ {
+  "id": "q24",
+  "kind": "paraphrase",
+  "groups": [
+   "all_employees"
+  ],
+  "question": "How much can I spend on food per day when I travel for work?",
+  "relevant": [
+   "handbook/expense_policy.md#2"
+  ],
+  "must": [
+   [
+    "45"
+   ]
+  ],
+  "reference": "45 EUR per day, no approval needed."
+ },
+ {
+  "id": "q25",
+  "kind": "paraphrase",
+  "groups": [
+   "all_employees"
+  ],
+  "question": "By when do I have to ask for a day of working from home?",
+  "relevant": [
+   "policies/remote_work_policy_v2.docx#3"
+  ],
+  "must": [
+   [
+    "one working day",
+    "1 working day"
+   ]
+  ],
+  "reference": "At least one working day in advance, in the HR portal."
+ },
+ {
+  "id": "q26",
+  "kind": "exact",
+  "groups": [
+   "all_employees",
+   "warehouse"
+  ],
+  "question": "What is the forklift speed limit inside the building?",
+  "relevant": [
+   "operations/legacy_warehouse_manual_rev7.pdf#25"
+  ],
+  "must": [
+   [
+    "6 km/h"
+   ]
+  ],
+  "reference": "6 km/h inside the building (10 km/h in the yard)."
+ },
+ {
+  "id": "q27",
+  "kind": "exact",
+  "groups": [
+   "all_employees",
+   "warehouse"
+  ],
+  "question": "How much is a store charged for a missing returnable crate?",
+  "relevant": [
+   "operations/legacy_warehouse_manual_rev7.pdf#22"
+  ],
+  "must": [
+   [
+    "3.50",
+    "3,50"
+   ]
+  ],
+  "reference": "3.50 EUR per crate."
+ },
+ {
+  "id": "q28",
+  "kind": "exact",
+  "groups": [
+   "all_employees",
+   "warehouse"
+  ],
+  "question": "How long may someone work in the freezer in a freezer suit?",
+  "relevant": [
+   "operations/legacy_warehouse_manual_rev7.pdf#24"
+  ],
+  "must": [
+   [
+    "45 min"
+   ]
+  ],
+  "reference": "Max. 45 minutes per hour."
+ },
+ {
+  "id": "q29",
+  "kind": "ukrainian",
+  "groups": [
+   "all_employees"
+  ],
+  "question": "Скільки компенсують за таксі під час відрядження?",
+  "relevant": [
+   "handbook/expense_policy.md#2"
+  ],
+  "must": [
+   [
+    "30"
+   ]
+  ],
+  "reference": "До 30 EUR за поїздку, погодження не потрібне."
+ },
+ {
+  "id": "q30",
+  "kind": "yes_no",
+  "groups": [
+   "all_employees"
+  ],
+  "question": "Will the company pay for an upgrade to business class?",
+  "relevant": [
+   "handbook/expense_policy.md#4"
+  ],
+  "must": [
+   [
+    "not reimbursed",
+    "is not",
+    "are not",
+    "no,",
+    "no."
+   ]
+  ],
+  "reference": "No. Upgrades to business class are not reimbursed."
+ },
+ {
+  "id": "q31",
+  "kind": "yes_no",
+  "groups": [
+   "all_employees"
+  ],
+  "question": "Can warehouse staff work remotely two days a week?",
+  "relevant": [
+   "policies/remote_work_policy_v2.docx#2"
+  ],
+  "must": [
+   [
+    "not eligible",
+    "cannot",
+    "can not",
+    "no,",
+    "no."
+   ]
+  ],
+  "reference": "No. Warehouse and dispatch roles are not eligible for remote work."
+ },
+ {
+  "id": "q32",
+  "kind": "multi_chunk",
+  "groups": [
+   "all_employees",
+   "warehouse"
+  ],
+  "question": "Which carrier is new in memo QMS-2017-04 and what is its weekday cut-off?",
+  "relevant": [
+   "operations/legacy_warehouse_manual_rev7.pdf#42"
+  ],
+  "must": [
+   [
+    "GLS"
+   ],
+   [
+    "16:00"
+   ]
+  ],
+  "reference": "GLS (parcel), cut-off 16:00 Mon-Fri."
+ },
+ {
+  "id": "q33",
+  "kind": "access",
+  "groups": [
+   "finance"
+  ],
+  "question": "How many people did the company employ at the end of Q3?",
+  "relevant": [
+   "finance/q3_budget_summary.pdf#0"
+  ],
+  "must": [
+   [
+    "312"
+   ]
+  ],
+  "reference": "312 people."
+ },
+ {
+  "id": "q34",
+  "kind": "no_answer",
+  "groups": [
+   "all_employees"
+  ],
+  "question": "How many people did the company employ at the end of Q3?",
+  "relevant": [],
+  "must": [],
+  "reference": "Not in the documents this user may read."
+ },
+ {
+  "id": "q35",
+  "kind": "no_answer",
+  "groups": [
+   "all_employees"
+  ],
+  "question": "How many days of paid vacation do employees get per year?",
+  "relevant": [],
+  "must": [],
+  "reference": "Not in the documents."
+ },
+ {
+  "id": "q36",
+  "kind": "no_answer",
+  "groups": [
+   "all_employees",
+   "warehouse"
+  ],
+  "question": "What is the Saturday cut-off time for GLS?",
+  "relevant": [],
+  "must": [],
+  "reference": "Not in the documents: the memo gives no Saturday time for GLS (\"-\")."
+ },
+ {
+  "id": "q37",
+  "kind": "followup",
+  "groups": [
+   "all_employees"
+  ],
+  "history": [
+   [
+    "How much can I spend on a hotel during a business trip?",
+    "120 EUR per night, approved by the team lead."
+   ]
+  ],
+  "question": "And what about a taxi?",
+  "relevant": [
+   "handbook/expense_policy.md#2"
+  ],
+  "must": [
+   [
+    "30"
+   ]
+  ],
+  "reference": "Up to 30 EUR per trip, no approval needed."
+ }
+]

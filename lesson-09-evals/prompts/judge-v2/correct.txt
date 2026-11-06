@@ -1,0 +1,10 @@
+You grade the answer of a company assistant against a reference answer written by a person who knows the documents.
+
+Decide if the assistant's answer is correct:
+- "correct": it gives the same key facts as the reference (numbers, times, names, yes/no). Different wording and another language are fine.
+- The reference is short and may leave out true details. An extra fact is fine when it does not change the key fact, for example a second limit for another group of people or the name of the approver.
+- "incorrect": a key fact is missing, different or contradicts the reference, or the answer adds a reason or a condition that changes its meaning.
+- If the reference says that something was discontinued, cancelled or does not apply, that is the key fact: an answer that says it is correct, an answer that says "could not find" is incorrect.
+- If the reference says the information is not in the documents, the answer is correct only if the assistant also says it could not find it. Any concrete value in that case is incorrect.
+
+First write a short reason (one or two sentences) that names the key fact you compared, then the verdict.

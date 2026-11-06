@@ -1,0 +1,1511 @@
+[
+ {
+  "id": "a01",
+  "case": "q01",
+  "answer": "Employees who have completed the probation period may work remotely up to three days per week.",
+  "found": true,
+  "cited": [
+   "policies/remote_work_policy_v2.docx#2"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v1r0",
+   "v2r0",
+   "v2r1",
+   "v2r2"
+  ]
+ },
+ {
+  "id": "a02",
+  "case": "q01",
+  "answer": "You may work remotely up to three days per week after completing your probation period, provided your role is eligible.",
+  "found": true,
+  "cited": [
+   "policies/remote_work_policy_v2.docx#2"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v3r1"
+  ]
+ },
+ {
+  "id": "a03",
+  "case": "q01",
+  "answer": "You may work remotely up to three days per week after completing your probation period. However, warehouse and dispatch roles are not eligible for remote work due to the need for physical presence on site.",
+  "found": true,
+  "cited": [
+   "policies/remote_work_policy_v2.docx#2"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v3r0",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a04",
+  "case": "q02",
+  "answer": "You must report the stolen laptop to the IT service desk within one hour of the incident.",
+  "found": true,
+  "cited": [
+   "policies/remote_work_policy_v2.docx#5"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v1r0"
+  ]
+ },
+ {
+  "id": "a05",
+  "case": "q02",
+  "answer": "You must report the stolen laptop to the IT service desk within one hour of the incident. Ensure you provide them with all necessary details about the theft.",
+  "found": true,
+  "cited": [
+   "policies/remote_work_policy_v2.docx#5"
+  ],
+  "correct": true,
+  "grounded": false,
+  "note": "right, but 'provide all necessary details about the theft' is not in the source",
+  "seen_in": [
+   "v3r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a06",
+  "case": "q02",
+  "answer": "You must report the stolen laptop to the IT service desk within one hour.",
+  "found": true,
+  "cited": [
+   "policies/remote_work_policy_v2.docx#5"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v2r0",
+   "v2r1",
+   "v2r2"
+  ]
+ },
+ {
+  "id": "a07",
+  "case": "q03",
+  "answer": "You can spend up to 120 EUR per night on a hotel during a business trip, with approval from your team lead.",
+  "found": true,
+  "cited": [
+   "handbook/expense_policy.md#2"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v1r0",
+   "v2r1",
+   "v3r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a08",
+  "case": "q03",
+  "answer": "You can spend up to 120 EUR per night on a hotel during a business trip.",
+  "found": true,
+  "cited": [
+   "handbook/expense_policy.md#2"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v2r0",
+   "v2r2"
+  ]
+ },
+ {
+  "id": "a09",
+  "case": "q04",
+  "answer": "An experienced colleague, referred to as a buddy, helps a newcomer with everyday questions during their first month.",
+  "found": true,
+  "cited": [
+   "handbook/onboarding.html#2"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v1r0",
+   "v2r0",
+   "v2r1",
+   "v2r2",
+   "v3r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a10",
+  "case": "q05",
+  "answer": "Warehouse staff gather at the assembly point in car park P2 when the fire alarm goes off.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#35"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v2r0",
+   "v2r1",
+   "v2r2"
+  ]
+ },
+ {
+  "id": "a11",
+  "case": "q05",
+  "answer": "Warehouse staff should gather at the assembly point in car park P2 when the fire alarm goes off.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#35"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v1r0",
+   "v3r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a12",
+  "case": "q06",
+  "answer": "The VPN server that is only for when the others fail is vpn-backup.northwind.example located in Frankfurt.",
+  "found": true,
+  "cited": [
+   "it/vpn_setup.docx#2"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v1r0",
+   "v2r0",
+   "v2r1",
+   "v3r0",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a13",
+  "case": "q06",
+  "answer": "The VPN server that is only for when the others fail is vpn-backup.northwind.example, located in Frankfurt.",
+  "found": true,
+  "cited": [
+   "it/vpn_setup.docx#2"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v3r1"
+  ]
+ },
+ {
+  "id": "a14",
+  "case": "q06",
+  "answer": "The server that is only for when the others fail is vpn-backup.northwind.example located in Frankfurt.",
+  "found": true,
+  "cited": [
+   "it/vpn_setup.docx#2"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v2r2"
+  ]
+ },
+ {
+  "id": "a15",
+  "case": "q07",
+  "answer": "FEFO means First expired, first out.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#37"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v2r0",
+   "v2r1",
+   "v2r2"
+  ]
+ },
+ {
+  "id": "a16",
+  "case": "q07",
+  "answer": "FEFO stands for \"First expired, first out,\" which is a method used for rotating food and pharmaceutical products to ensure that items nearing their expiration dates are used first.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#37"
+  ],
+  "correct": true,
+  "grounded": false,
+  "note": "right, but 'food and pharmaceutical' is not in the cited chunk #37 (it is in #10, not cited)",
+  "seen_in": [
+   "v3r0",
+   "v3r1"
+  ]
+ },
+ {
+  "id": "a17",
+  "case": "q07",
+  "answer": "FEFO stands for \"First expired, first out,\" which is a method used for rotating stock, particularly for food and pharmaceutical products.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#37"
+  ],
+  "correct": true,
+  "grounded": false,
+  "note": "right, but 'food and pharmaceutical' is not in the cited chunk #37",
+  "seen_in": [
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a18",
+  "case": "q07",
+  "answer": "FEFO stands for 'First Expired, First Out,' which is a rotation method used primarily for food and pharmaceutical products to ensure that items nearing their expiration date are used or sold first.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#37",
+   "operations/legacy_warehouse_manual_rev7.pdf#10"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v1r0"
+  ]
+ },
+ {
+  "id": "a19",
+  "case": "q08",
+  "answer": "Reason code 14 is used for writing off a carton of frozen goods that has been tested with the drill probe during receiving operations.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#7"
+  ],
+  "correct": true,
+  "grounded": false,
+  "note": "right, but the drill probe is in #6 and only #7 is cited",
+  "seen_in": [
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a20",
+  "case": "q08",
+  "answer": "Reason code 14 is used for writing off a carton of frozen goods that has been tested with the drill probe during receiving.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#7"
+  ],
+  "correct": true,
+  "grounded": false,
+  "note": "right, but the drill probe is in #6 and only #7 is cited",
+  "seen_in": [
+   "v3r0"
+  ]
+ },
+ {
+  "id": "a21",
+  "case": "q08",
+  "answer": "Reason code 14 is used for writing off a carton of frozen goods that has been tested with the drill probe on one sacrificial carton per load.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#7"
+  ],
+  "correct": true,
+  "grounded": false,
+  "note": "right, but the drill probe is in #6 and only #7 is cited",
+  "seen_in": [
+   "v2r0",
+   "v2r1",
+   "v2r2"
+  ]
+ },
+ {
+  "id": "a22",
+  "case": "q08",
+  "answer": "Reason code 14 is used for writing off a frozen carton that has been tested with the drill probe and found to be out of tolerance.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#7"
+  ],
+  "correct": false,
+  "grounded": false,
+  "note": "wrong: the carton is written off because it is drilled (sacrificial), not because it is out of tolerance",
+  "seen_in": [
+   "v1r0"
+  ]
+ },
+ {
+  "id": "a23",
+  "case": "q09",
+  "answer": "I could not find this in the documents available to you.",
+  "found": false,
+  "cited": [],
+  "correct": false,
+  "grounded": null,
+  "note": "not found, but the answer is in chunk #16",
+  "seen_in": [
+   "v1r0",
+   "v2r0",
+   "v2r1",
+   "v2r2",
+   "v3r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a24",
+  "case": "q10",
+  "answer": "Dr. L. Meier is on extension 240.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#36"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v1r0",
+   "v2r0",
+   "v2r1",
+   "v2r2",
+   "v3r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a25",
+  "case": "q11",
+  "answer": "Працівники, які завершили випробувальний термін, можуть працювати віддалено до трьох днів на тиждень.",
+  "found": true,
+  "cited": [
+   "policies/remote_work_policy_v2.docx#2"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v2r0",
+   "v2r1",
+   "v2r2"
+  ]
+ },
+ {
+  "id": "a26",
+  "case": "q11",
+  "answer": "Працівники, які завершили випробувальний термін, можуть працювати віддалено до трьох днів на тиждень. Однак ролі на складі та в диспетчеризації не мають права на віддалену роботу, оскільки їхня діяльність вимагає фізичної присутності на місці.",
+  "found": true,
+  "cited": [
+   "policies/remote_work_policy_v2.docx#2"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v3r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a27",
+  "case": "q11",
+  "answer": "Співробітники, які завершили випробувальний термін, можуть працювати віддалено до трьох днів на тиждень.",
+  "found": true,
+  "cited": [
+   "policies/remote_work_policy_v2.docx#2"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v1r0"
+  ]
+ },
+ {
+  "id": "a28",
+  "case": "q12",
+  "answer": "Нова Пошта забирає посилки до 17:00 у будні.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#40"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v1r0",
+   "v2r0",
+   "v2r1",
+   "v2r2",
+   "v3r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a29",
+  "case": "q13",
+  "answer": "Один чоловік може піднімати до 25 кг, а жінка - до 15 кг. Важчі предмети слід піднімати удвох або за допомогою візка.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#27",
+   "legacy/warehouse_safety_ua.txt#1"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v1r0"
+  ]
+ },
+ {
+  "id": "a30",
+  "case": "q13",
+  "answer": "Рекомендована максимальна вага для повторного піднімання становить 25 кг для чоловіків і 15 кг для жінок; важчі предмети піднімають удвох або за допомогою візка.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#27"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v2r2"
+  ]
+ },
+ {
+  "id": "a31",
+  "case": "q13",
+  "answer": "Рекомендована максимальна вага для підняття одним чоловіком становить 25 кг, а для жінок - 15 кг. Важчі предмети піднімаються удвох або за допомогою візка.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#27"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v2r0",
+   "v2r1"
+  ]
+ },
+ {
+  "id": "a32",
+  "case": "q13",
+  "answer": "Рекомендована максимальна вага для підняття одним чоловіком становить 25 кг, а для жінок – 15 кг. Важчі предмети слід піднімати удвох або за допомогою візка.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#27"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v3r1"
+  ]
+ },
+ {
+  "id": "a33",
+  "case": "q13",
+  "answer": "Рекомендується максимальна вага для підйому одним чоловіком становить 25 кг, а для жінок – 15 кг. Вантажі понад 25 кг слід піднімати удвох або за допомогою візка.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#27"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v3r0"
+  ]
+ },
+ {
+  "id": "a34",
+  "case": "q13",
+  "answer": "Рекомендується максимальна вага для підняття одним чоловіком становить 25 кг, а для жінок – 15 кг. Важчі предмети слід піднімати удвох або за допомогою візка.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#27"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a35",
+  "case": "q14",
+  "answer": "Yes, you can claim up to 40 EUR per year for a keyboard through the expense policy. To submit the claim, upload the receipt to the expense tool within 30 days of purchase.",
+  "found": true,
+  "cited": [
+   "policies/remote_work_policy_v2.docx#4",
+   "handbook/expense_policy.md#1",
+   "handbook/expense_policy.md#3"
+  ],
+  "correct": true,
+  "grounded": false,
+  "note": "right, but 'of purchase' is added: the policy says 'within 30 days'",
+  "seen_in": [
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a36",
+  "case": "q14",
+  "answer": "Yes, you can claim up to 40 EUR per year for a keyboard used at home. To submit the claim, upload the receipt to the expense tool within 30 days of purchase.",
+  "found": true,
+  "cited": [
+   "policies/remote_work_policy_v2.docx#4",
+   "handbook/expense_policy.md#1",
+   "handbook/expense_policy.md#3"
+  ],
+  "correct": true,
+  "grounded": false,
+  "note": "right, but 'of purchase' is added: the policy says 'within 30 days'",
+  "seen_in": [
+   "v1r0"
+  ]
+ },
+ {
+  "id": "a37",
+  "case": "q14",
+  "answer": "Yes, you can claim up to 40 EUR per year for a keyboard used at home. To submit the claim, upload the receipt to the expense tool within 30 days, as claims without a receipt are rejected.",
+  "found": true,
+  "cited": [
+   "policies/remote_work_policy_v2.docx#4",
+   "handbook/expense_policy.md#1",
+   "handbook/expense_policy.md#3"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v3r0",
+   "v3r1"
+  ]
+ },
+ {
+  "id": "a38",
+  "case": "q14",
+  "answer": "You can claim up to 40 EUR per year for a keyboard through the expense policy. To submit the claim, upload the receipt to the expense tool within 30 days.",
+  "found": true,
+  "cited": [
+   "handbook/expense_policy.md#1",
+   "handbook/expense_policy.md#3"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v2r0",
+   "v2r1",
+   "v2r2"
+  ]
+ },
+ {
+  "id": "a39",
+  "case": "q15",
+  "answer": "The latest time to hand over parcels to DPD on a weekday is 17:15 (memo QMS-2017-04 replaced the previous cut-off time).",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#42"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v2r0",
+   "v2r1",
+   "v2r2"
+  ]
+ },
+ {
+  "id": "a40",
+  "case": "q15",
+  "answer": "The latest time to hand over parcels to DPD on a weekday is 17:15, according to the new carrier cut-off times effective from 18.04.2017.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#42"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v3r1"
+  ]
+ },
+ {
+  "id": "a41",
+  "case": "q15",
+  "answer": "The latest time to hand over parcels to DPD on a weekday is 17:15, as per the new carrier cut-off times effective from 18.04.2017.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#42"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v3r0"
+  ]
+ },
+ {
+  "id": "a42",
+  "case": "q15",
+  "answer": "The latest time to hand over parcels to DPD on a weekday is 17:15.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#42"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v1r0",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a43",
+  "case": "q16",
+  "answer": "I could not find this in the documents available to you.",
+  "found": false,
+  "cited": [],
+  "correct": false,
+  "grounded": null,
+  "note": "not found, but memo QMS-2017-04 says Raben was discontinued",
+  "seen_in": [
+   "v3r0",
+   "v3r1"
+  ]
+ },
+ {
+  "id": "a44",
+  "case": "q16",
+  "answer": "The Raben groupage service has been discontinued as of the memo dated 10.04.2017, so there is no weekday cut-off time for this service.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#42"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a45",
+  "case": "q16",
+  "answer": "The Raben groupage service has been discontinued.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#42"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v2r0",
+   "v2r1",
+   "v2r2"
+  ]
+ },
+ {
+  "id": "a46",
+  "case": "q16",
+  "answer": "The weekday cut-off time for Raben groupage is 14:00.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#20"
+  ],
+  "correct": false,
+  "grounded": true,
+  "note": "grounded but wrong: 14:00 is from the old table in 7.4, the memo discontinued Raben",
+  "seen_in": [
+   "v1r0"
+  ]
+ },
+ {
+  "id": "a47",
+  "case": "q17",
+  "answer": "The total operating costs in Q3 were 4.2 million EUR, which is 3 percent below plan.",
+  "found": true,
+  "cited": [
+   "finance/q3_budget_summary.pdf#0"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v1r0",
+   "v3r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a48",
+  "case": "q17",
+  "answer": "Total operating costs in Q3 were 4.2 million EUR.",
+  "found": true,
+  "cited": [
+   "finance/q3_budget_summary.pdf#0"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v2r0",
+   "v2r1",
+   "v2r2"
+  ]
+ },
+ {
+  "id": "a49",
+  "case": "q18",
+  "answer": "I could not find this in the documents available to you.",
+  "found": false,
+  "cited": [],
+  "correct": true,
+  "grounded": null,
+  "note": "no answer in the documents: not found is right",
+  "seen_in": [
+   "v1r0",
+   "v2r0",
+   "v2r1",
+   "v2r2",
+   "v3r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a50",
+  "case": "q19",
+  "answer": "I could not find this in the documents available to you.",
+  "found": false,
+  "cited": [],
+  "correct": true,
+  "grounded": null,
+  "note": "no answer in the documents: not found is right",
+  "seen_in": [
+   "v1r0",
+   "v2r0",
+   "v2r1",
+   "v2r2",
+   "v3r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a51",
+  "case": "q20",
+  "answer": "I could not find this in the documents available to you.",
+  "found": false,
+  "cited": [],
+  "correct": true,
+  "grounded": null,
+  "note": "no answer in the documents: not found is right",
+  "seen_in": [
+   "v1r0",
+   "v2r0",
+   "v2r1",
+   "v2r2",
+   "v3r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a52",
+  "case": "q21",
+  "answer": "I could not find this in the documents available to you.",
+  "found": false,
+  "cited": [],
+  "correct": true,
+  "grounded": null,
+  "note": "no answer in the documents: not found is right",
+  "seen_in": [
+   "v1r0",
+   "v2r0",
+   "v2r1",
+   "v2r2",
+   "v3r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a53",
+  "case": "q22",
+  "answer": "The yearly limit for claiming home office equipment is 40 EUR.",
+  "found": true,
+  "cited": [
+   "handbook/expense_policy.md#1"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v2r1"
+  ]
+ },
+ {
+  "id": "a54",
+  "case": "q22",
+  "answer": "The yearly limit for claiming home office equipment is up to 40 EUR per year for items like a keyboard or mouse, as stated in the expense policy.",
+  "found": true,
+  "cited": [
+   "handbook/expense_policy.md#1",
+   "policies/remote_work_policy_v2.docx#4"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a55",
+  "case": "q22",
+  "answer": "The yearly limit for claiming money for home office equipment is 40 EUR.",
+  "found": true,
+  "cited": [
+   "handbook/expense_policy.md#1"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v2r0",
+   "v2r2"
+  ]
+ },
+ {
+  "id": "a56",
+  "case": "q22",
+  "answer": "The yearly limit for claiming money for home office equipment is up to 40 EUR per year for items like a keyboard or mouse, as stated in the expense policy.",
+  "found": true,
+  "cited": [
+   "handbook/expense_policy.md#1",
+   "policies/remote_work_policy_v2.docx#4"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v3r0",
+   "v3r1"
+  ]
+ },
+ {
+  "id": "a57",
+  "case": "q22",
+  "answer": "The yearly limit for claiming money for home office equipment is up to 40 EUR.",
+  "found": true,
+  "cited": [
+   "handbook/expense_policy.md#1",
+   "policies/remote_work_policy_v2.docx#4"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v1r0"
+  ]
+ },
+ {
+  "id": "a58",
+  "case": "q23",
+  "answer": "Dr. L. Meier's e-mail is qa@northwind.example.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#36"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v1r0",
+   "v2r0",
+   "v2r1",
+   "v2r2",
+   "v3r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a59",
+  "case": "q24",
+  "answer": "You can spend up to 45 EUR per day on meals when traveling for work.",
+  "found": true,
+  "cited": [
+   "handbook/expense_policy.md#2"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v2r0",
+   "v2r1",
+   "v2r2"
+  ]
+ },
+ {
+  "id": "a60",
+  "case": "q24",
+  "answer": "You can spend up to 45 EUR per day on meals while traveling for work, and no approval is needed for this expense.",
+  "found": true,
+  "cited": [
+   "handbook/expense_policy.md#2"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v3r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a61",
+  "case": "q24",
+  "answer": "You can spend up to 45 EUR per day on meals while traveling for work.",
+  "found": true,
+  "cited": [
+   "handbook/expense_policy.md#2"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v1r0"
+  ]
+ },
+ {
+  "id": "a62",
+  "case": "q25",
+  "answer": "Remote days are requested in the HR portal at least one working day in advance.",
+  "found": true,
+  "cited": [
+   "policies/remote_work_policy_v2.docx#3"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v2r0",
+   "v2r1",
+   "v2r2"
+  ]
+ },
+ {
+  "id": "a63",
+  "case": "q25",
+  "answer": "You must request a remote day in the HR portal at least one working day in advance.",
+  "found": true,
+  "cited": [
+   "policies/remote_work_policy_v2.docx#3"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v1r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a64",
+  "case": "q25",
+  "answer": "You must request a remote work day in the HR portal at least one working day in advance.",
+  "found": true,
+  "cited": [
+   "policies/remote_work_policy_v2.docx#3"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v3r0"
+  ]
+ },
+ {
+  "id": "a65",
+  "case": "q26",
+  "answer": "The speed limit for forklifts inside the building is 6 km/h.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#25"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v1r0",
+   "v3r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a66",
+  "case": "q26",
+  "answer": "The speed limit inside the building is 6 km/h.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#25"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v2r0",
+   "v2r1",
+   "v2r2"
+  ]
+ },
+ {
+  "id": "a67",
+  "case": "q27",
+  "answer": "A store is charged 3.50 EUR per missing returnable crate.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#22"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v1r0",
+   "v2r0",
+   "v2r1",
+   "v2r2",
+   "v3r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a68",
+  "case": "q28",
+  "answer": "A freezer suit allows for a maximum of 45 minutes per hour in the freezer.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#24"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v2r0",
+   "v2r1",
+   "v2r2"
+  ]
+ },
+ {
+  "id": "a69",
+  "case": "q28",
+  "answer": "An employee may work in a freezer suit for a maximum of 45 minutes per hour.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#24"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v1r0"
+  ]
+ },
+ {
+  "id": "a70",
+  "case": "q28",
+  "answer": "In a freezer suit, an employee may work for a maximum of 45 minutes per hour in the freezer area.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#24"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v3r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a71",
+  "case": "q29",
+  "answer": "Компенсація за таксі під час відрядження становить 30 EUR за поїздку без необхідності отримувати схвалення.",
+  "found": true,
+  "cited": [
+   "handbook/expense_policy.md#2"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v3r0"
+  ]
+ },
+ {
+  "id": "a72",
+  "case": "q29",
+  "answer": "Компенсація за таксі під час відрядження становить 30 EUR за поїздку, не потрібне погодження.",
+  "found": true,
+  "cited": [
+   "handbook/expense_policy.md#2"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a73",
+  "case": "q29",
+  "answer": "Компенсація за таксі під час відрядження становить 30 EUR за поїздку.",
+  "found": true,
+  "cited": [
+   "handbook/expense_policy.md#2"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v1r0",
+   "v2r0",
+   "v2r1",
+   "v2r2"
+  ]
+ },
+ {
+  "id": "a74",
+  "case": "q30",
+  "answer": "I could not find this in the documents available to you.",
+  "found": false,
+  "cited": [],
+  "correct": false,
+  "grounded": null,
+  "note": "not found, but 'upgrades to business class' are listed as not reimbursed",
+  "seen_in": [
+   "v1r0"
+  ]
+ },
+ {
+  "id": "a75",
+  "case": "q30",
+  "answer": "No, the company does not reimburse for upgrades to business class as stated in the expense policy.",
+  "found": true,
+  "cited": [
+   "handbook/expense_policy.md#4"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v3r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a76",
+  "case": "q30",
+  "answer": "The company does not reimburse upgrades to business class.",
+  "found": true,
+  "cited": [
+   "handbook/expense_policy.md#4"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v2r0",
+   "v2r1",
+   "v2r2"
+  ]
+ },
+ {
+  "id": "a77",
+  "case": "q31",
+  "answer": "I could not find this in the documents available to you.",
+  "found": false,
+  "cited": [],
+  "correct": false,
+  "grounded": null,
+  "note": "not found, but warehouse roles are not eligible (policy section 2)",
+  "seen_in": [
+   "v1r0",
+   "v3r1"
+  ]
+ },
+ {
+  "id": "a78",
+  "case": "q31",
+  "answer": "No, warehouse staff are not eligible to work remotely because their roles require physical presence on site.",
+  "found": true,
+  "cited": [
+   "policies/remote_work_policy_v2.docx#2"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v3r0",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a79",
+  "case": "q31",
+  "answer": "Warehouse and dispatch roles are not eligible for remote work because their work requires physical presence on site.",
+  "found": true,
+  "cited": [
+   "policies/remote_work_policy_v2.docx#2"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v2r0",
+   "v2r1",
+   "v2r2"
+  ]
+ },
+ {
+  "id": "a80",
+  "case": "q32",
+  "answer": "The new carrier in memo QMS-2017-04 is GLS with a weekday cut-off of 16:00.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#42"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v2r2"
+  ]
+ },
+ {
+  "id": "a81",
+  "case": "q32",
+  "answer": "The new carrier in memo QMS-2017-04 is GLS with a weekday cut-off time of 16:00.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#42"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v2r0",
+   "v2r1"
+  ]
+ },
+ {
+  "id": "a82",
+  "case": "q32",
+  "answer": "The new carrier mentioned in memo QMS-2017-04 is GLS, and its weekday cut-off time is 16:00.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#42"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v3r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a83",
+  "case": "q32",
+  "answer": "The new carrier mentioned in memo QMS-2017-04 is GLS, with a weekday cut-off time of 16:00.",
+  "found": true,
+  "cited": [
+   "operations/legacy_warehouse_manual_rev7.pdf#42"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v1r0"
+  ]
+ },
+ {
+  "id": "a84",
+  "case": "q33",
+  "answer": "The company employed 312 people at the end of Q3.",
+  "found": true,
+  "cited": [
+   "finance/q3_budget_summary.pdf#0"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v1r0",
+   "v2r0",
+   "v2r1",
+   "v2r2",
+   "v3r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a85",
+  "case": "q34",
+  "answer": "I could not find this in the documents available to you.",
+  "found": false,
+  "cited": [],
+  "correct": true,
+  "grounded": null,
+  "note": "no answer in the documents: not found is right",
+  "seen_in": [
+   "v1r0",
+   "v2r0",
+   "v2r1",
+   "v2r2",
+   "v3r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a86",
+  "case": "q35",
+  "answer": "I could not find this in the documents available to you.",
+  "found": false,
+  "cited": [],
+  "correct": true,
+  "grounded": null,
+  "note": "no answer in the documents: not found is right",
+  "seen_in": [
+   "v1r0",
+   "v2r0",
+   "v2r1",
+   "v2r2",
+   "v3r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a87",
+  "case": "q36",
+  "answer": "I could not find this in the documents available to you.",
+  "found": false,
+  "cited": [],
+  "correct": true,
+  "grounded": null,
+  "note": "no answer in the documents: not found is right",
+  "seen_in": [
+   "v1r0",
+   "v2r0",
+   "v2r1",
+   "v2r2",
+   "v3r0",
+   "v3r1",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a88",
+  "case": "q37",
+  "answer": "The limit for taxi expenses is 30 EUR per trip, and no approval is needed for this claim.",
+  "found": true,
+  "cited": [
+   "handbook/expense_policy.md#2"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v3r0",
+   "v3r2"
+  ]
+ },
+ {
+  "id": "a89",
+  "case": "q37",
+  "answer": "The limit for taxi expenses is 30 EUR per trip, and no approval is needed for this expense.",
+  "found": true,
+  "cited": [
+   "handbook/expense_policy.md#2"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v1r0",
+   "v3r1"
+  ]
+ },
+ {
+  "id": "a90",
+  "case": "q37",
+  "answer": "The limit for taxi expenses is 30 EUR per trip, and no approval is needed.",
+  "found": true,
+  "cited": [
+   "handbook/expense_policy.md#2"
+  ],
+  "correct": true,
+  "grounded": true,
+  "note": "right and supported by the cited source",
+  "seen_in": [
+   "v2r0",
+   "v2r1",
+   "v2r2"
+  ]
+ }
+]
