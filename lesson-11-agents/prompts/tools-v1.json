@@ -1,0 +1,18 @@
+{
+  "search_docs": {
+    "description": "Search.",
+    "params": {"query": "query", "k": "k"}
+  },
+  "calculate": {
+    "description": "Calculator.",
+    "params": {"expression": "expression"}
+  },
+  "days_between": {
+    "description": "Days between dates.",
+    "params": {"date_from": "from", "date_to": "to"}
+  },
+  "submit_claim": {
+    "description": "Submit a claim.",
+    "params": {"category": "category", "amount_eur": "amount", "receipt_date": "date", "description": "description"}
+  }
+}

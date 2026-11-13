@@ -1,0 +1,31 @@
+{
+  "search_docs": {
+    "description": "Search the Northwind company documents (expense policy, remote work policy, onboarding, IT guides) that this employee may read. Use it for every question about company rules, limits, deadlines or procedures, before you answer. Returns up to k chunks, each with chunk_id, section and text. If nothing relevant comes back, the documents do not contain the answer: do not guess.",
+    "params": {
+      "query": "What to look for, in English, as a short phrase with the key terms, e.g. 'taxi limit per trip' or 'receipt submission deadline'. The documents are in English even when the user writes in Ukrainian.",
+      "k": "How many chunks to return, 1-8. Default 4 is enough for one topic."
+    }
+  },
+  "calculate": {
+    "description": "Evaluate an arithmetic expression exactly. Use it for every sum, difference, product or limit cap instead of computing in your head. Supports numbers with a dot as the decimal separator, + - * / ( ), and min(), max(), round(), abs(). No variables, units or currency signs. Example: 'min(95, 80) + 12.5' caps a 95 EUR expense at a limit of 80 and adds 12.5. Returns {expression, result}.",
+    "params": {
+      "expression": "A plain arithmetic expression, e.g. '2 * min(95, 80)' or '500 - 125.5'."
+    }
+  },
+  "days_between": {
+    "description": "Count calendar days from date_from to date_to. Use it for every deadline or 'how long ago' question instead of counting days yourself. Returns {days}; days is negative if date_to is before date_from. Today's date is given in the system prompt.",
+    "params": {
+      "date_from": "The earlier date, in YYYY-MM-DD format, e.g. a receipt date 2026-01-15.",
+      "date_to": "The later date, in YYYY-MM-DD format, usually today."
+    }
+  },
+  "submit_claim": {
+    "description": "Submit an expense claim to the expense system on the employee's behalf. This changes data outside the conversation, so call it only when the employee explicitly asks to submit a claim and has given the category, amount and receipt date. The system asks the employee to confirm before anything is sent; if they decline, the claim is not submitted: tell them so and do not call it again. Never use it to answer a question about rules or amounts.",
+    "params": {
+      "category": "One of: hotel, meals, taxi, training, home_office.",
+      "amount_eur": "The amount on the receipt in EUR, a number without the currency sign, e.g. 19.9 or 250.",
+      "receipt_date": "The date on the receipt, in YYYY-MM-DD format.",
+      "description": "A short note about the expense, e.g. 'taxi to a client meeting'."
+    }
+  }
+}

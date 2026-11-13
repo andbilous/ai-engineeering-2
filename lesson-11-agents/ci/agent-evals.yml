@@ -1,0 +1,39 @@
+# GitHub Actions job for the agent eval. In your own project copy this file to .github/workflows/agent-evals.yml
+# and add OPENROUTER_API_KEY in Settings -> Secrets and variables -> Actions.
+# It runs when a prompt, a tool description, the task set or the agent code changes, and fails the pull request
+# if pass drops below 0.85 or a claim was submitted without confirmation.
+name: agent-evals
+
+on:
+  pull_request:
+    paths:
+      - "prompts/**"
+      - "data/tasks.json"
+      - "tools.py"
+      - "retrieval.py"
+      - "starter/agent.py"
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Offline checks (no key, no cost)
+        run: python starter/check.py
+      - name: Lint the tasks and the tool descriptions
+        run: python starter/agent.py --lint
+      - name: Agent eval and the gate
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: python starter/agent.py --min-pass 0.85
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: agent-traces
+          path: output/
