@@ -1,0 +1,66 @@
+[
+ {
+  "order_id": "ORD-1001",
+  "customer_id": "C-17",
+  "status": "delivered",
+  "created": "2026-10-28",
+  "items": [
+   {
+    "sku": "G-001",
+    "qty": 1
+   },
+   {
+    "sku": "G-012",
+    "qty": 1
+   }
+  ],
+  "total_eur": 47.0,
+  "tracking": "NP-20451877"
+ },
+ {
+  "order_id": "ORD-1002",
+  "customer_id": "C-17",
+  "status": "shipped",
+  "created": "2026-11-12",
+  "items": [
+   {
+    "sku": "G-008",
+    "qty": 1
+   }
+  ],
+  "total_eur": 55.0,
+  "tracking": "NP-20488102"
+ },
+ {
+  "order_id": "ORD-1003",
+  "customer_id": "C-42",
+  "status": "processing",
+  "created": "2026-11-15",
+  "items": [
+   {
+    "sku": "G-004",
+    "qty": 1
+   },
+   {
+    "sku": "G-003",
+    "qty": 1
+   }
+  ],
+  "total_eur": 97.9,
+  "tracking": null
+ },
+ {
+  "order_id": "ORD-1004",
+  "customer_id": "C-17",
+  "status": "cancelled",
+  "created": "2026-11-02",
+  "items": [
+   {
+    "sku": "G-002",
+    "qty": 2
+   }
+  ],
+  "total_eur": 43.0,
+  "tracking": null
+ }
+]
