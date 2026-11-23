@@ -21,7 +21,7 @@ from core.store import Store
 
 ROOT = Path(__file__).resolve().parent
 load_dotenv(ROOT / ".env")
-MODEL = os.getenv("HELPDESK_MODEL", "claude-opus-5-5")
+MODEL = os.getenv("HELPDESK_MODEL", "claude-sonnet-5-5")
 
 
 @dataclass
