@@ -1,0 +1,5 @@
+[
+  {"id": "support-bot", "name": "Бот підтримки", "owner": "sarah", "members": ["emily", "daniel"], "monthly_budget": 50.0, "hard_limit": true},
+  {"id": "rag-search", "name": "Пошук по документації", "owner": "michael", "members": ["james", "olivia"], "monthly_budget": 20.0, "hard_limit": false},
+  {"id": "eval-runs", "name": "Прогони evals", "owner": "michael", "members": ["olivia"], "monthly_budget": 5.0, "hard_limit": true}
+]

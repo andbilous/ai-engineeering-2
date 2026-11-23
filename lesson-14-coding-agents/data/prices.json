@@ -1,0 +1,6 @@
+[
+  {"model": "atlas-large", "input": 3.00, "cached_input": 0.30, "output": 15.00},
+  {"model": "atlas-small", "input": 0.80, "cached_input": 0.08, "output": 4.00},
+  {"model": "nova-pro", "input": 2.50, "cached_input": 1.25, "output": 10.00},
+  {"model": "nova-mini", "input": 0.15, "cached_input": 0.075, "output": 0.60}
+]
