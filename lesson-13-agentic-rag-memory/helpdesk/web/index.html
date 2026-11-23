@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Northwind · IT-асистент</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="logo">N</span>
+    <div><div>Northwind · IT-асистент</div>
+      <div class="tagline">Внутрішній чат IT-підтримки для співробітників: відповідає за інструкціями IT-відділу, пам'ятає ваш пристрій, створює заявки й запити на доступ</div></div>
+  </div>
+  <label class="who">Я:
+    <select id="employee"></select>
+  </label>
+  <button id="newSession" class="btn ghost" title="Завершити розмову: код запише епізод у пам'ять">Нова сесія</button>
+  <div id="mode" class="mode"></div>
+</header>
+
+<main class="layout">
+  <section class="chat">
+    <div id="messages" class="messages" aria-live="polite">
+      <section class="hero">
+        <h1>IT-асистент Northwind</h1>
+        <p>Навчальний проєкт заняття 13. Співробітники вигаданої компанії Northwind пишуть сюди свої IT-проблеми:
+          VPN, паролі, доступи, ноутбуки. Асистент шукає відповідь у 24 внутрішніх інструкціях IT-відділу,
+          пам'ятає співробітника між розмовами, створює заявки і запити на доступ, які погоджує керівник.</p>
+        <div class="try">Спробуйте:
+          <button type="button" class="chip">VPN пише CERT_EXPIRED, що робити?</button>
+          <button type="button" class="chip">У мене MacBook Air</button>
+          <button type="button" class="chip">Дайте мені доступ до CRM</button>
+          <button type="button" class="chip">Я загубив робочий ноутбук</button>
+        </div>
+        <p class="muted small">Праворуч видно, що відбувається всередині: «Контекст» — з чого складається запит до моделі,
+          «Пам'ять» — що асистент знає про вас, «Журнал» — хто що записав, «Заявки» і «Погодження» — заявки й запити на доступ.</p>
+      </section>
+    </div>
+    <form id="composer" class="composer">
+      <textarea id="input" rows="3" placeholder="Ваше питання до IT…"></textarea>
+      <div class="row">
+        <button type="button" id="sampleLog" class="btn ghost">Приклад журналу</button>
+        <span id="busy" class="busy" hidden>агент думає…</span>
+        <button type="submit" class="btn">Надіслати</button>
+      </div>
+    </form>
+  </section>
+
+  <aside class="inspector">
+    <nav class="tabs" role="tablist">
+      <button class="tab active" data-tab="context">Контекст</button>
+      <button class="tab" data-tab="memory">Пам'ять</button>
+      <button class="tab" data-tab="audit">Журнал</button>
+      <button class="tab" data-tab="tickets">Заявки</button>
+      <button class="tab" data-tab="approvals">Погодження <span id="pending" class="badge" hidden></span></button>
+    </nav>
+    <div id="panel-context" class="panel active"><p class="muted">Тут з'явиться склад запиту після першого питання.</p></div>
+    <div id="panel-memory" class="panel"></div>
+    <div id="panel-audit" class="panel"></div>
+    <div id="panel-tickets" class="panel"></div>
+    <div id="panel-approvals" class="panel"></div>
+  </aside>
+</main>
+<script src="/static/app.js"></script>
+</body>
+</html>

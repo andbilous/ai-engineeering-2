@@ -1,0 +1,200 @@
+2026-11-23 19:02:03 [INFO] NorthwindVPN client 4.2.1 (openconnect 9.12) starting
+2026-11-23 19:02:06 [INFO] profile ~/.northwind/vpn.conf loaded, gateway vpn.northwind.ua
+2026-11-23 19:02:08 [INFO] checking for client updates: none
+2026-11-23 19:02:10 [INFO] checking for client updates: none
+2026-11-23 19:02:12 [DEBUG] tun0 stats rx=0 tx=0
+2026-11-23 19:02:14 [INFO] checking for client updates: none
+2026-11-23 19:02:16 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:02:17 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:02:19 [INFO] checking for client updates: none
+2026-11-23 19:02:22 [DEBUG] keepalive sent
+2026-11-23 19:02:26 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:02:27 [INFO] network interface wlan0 up
+2026-11-23 19:02:29 [DEBUG] keepalive sent
+2026-11-23 19:02:32 [DEBUG] tun0 stats rx=0 tx=0
+2026-11-23 19:02:36 [INFO] checking for client updates: none
+2026-11-23 19:02:40 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:02:43 [INFO] network interface wlan0 up
+2026-11-23 19:02:45 [DEBUG] route table refreshed
+2026-11-23 19:02:49 [INFO] checking for client updates: none
+2026-11-23 19:02:52 [DEBUG] route table refreshed
+2026-11-23 19:02:55 [INFO] checking for client updates: none
+2026-11-23 19:02:56 [INFO] network interface wlan0 up
+2026-11-23 19:02:59 [INFO] checking for client updates: none
+2026-11-23 19:03:03 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:03:05 [DEBUG] route table refreshed
+2026-11-23 19:03:09 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:03:11 [INFO] network interface wlan0 up
+2026-11-23 19:03:13 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:03:16 [INFO] network interface wlan0 up
+2026-11-23 19:03:19 [DEBUG] route table refreshed
+2026-11-23 19:03:22 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:03:25 [DEBUG] route table refreshed
+2026-11-23 19:03:27 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:03:31 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:03:33 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:03:35 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:03:38 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:03:39 [DEBUG] route table refreshed
+2026-11-23 19:03:43 [DEBUG] route table refreshed
+2026-11-23 19:03:44 [INFO] checking for client updates: none
+2026-11-23 19:03:48 [DEBUG] tun0 stats rx=0 tx=0
+2026-11-23 19:03:49 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:03:51 [DEBUG] route table refreshed
+2026-11-23 19:03:55 [INFO] checking for client updates: none
+2026-11-23 19:03:58 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:04:02 [INFO] checking for client updates: none
+2026-11-23 19:04:05 [DEBUG] tun0 stats rx=0 tx=0
+2026-11-23 19:04:08 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:04:11 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:04:13 [INFO] checking for client updates: none
+2026-11-23 19:04:15 [INFO] checking for client updates: none
+2026-11-23 19:04:19 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:04:20 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:04:21 [INFO] network interface wlan0 up
+2026-11-23 19:04:24 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:04:27 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:04:29 [DEBUG] tun0 stats rx=0 tx=0
+2026-11-23 19:04:30 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:04:32 [DEBUG] keepalive sent
+2026-11-23 19:04:36 [INFO] checking for client updates: none
+2026-11-23 19:04:37 [DEBUG] route table refreshed
+2026-11-23 19:04:40 [INFO] checking for client updates: none
+2026-11-23 19:04:41 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:04:42 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:04:45 [DEBUG] keepalive sent
+2026-11-23 19:04:49 [INFO] network interface wlan0 up
+2026-11-23 19:04:52 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:04:53 [DEBUG] route table refreshed
+2026-11-23 19:04:56 [DEBUG] tun0 stats rx=0 tx=0
+2026-11-23 19:04:57 [DEBUG] keepalive sent
+2026-11-23 19:05:00 [INFO] network interface wlan0 up
+2026-11-23 19:05:02 [DEBUG] route table refreshed
+2026-11-23 19:05:06 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:05:08 [INFO] network interface wlan0 up
+2026-11-23 19:05:09 [DEBUG] route table refreshed
+2026-11-23 19:05:11 [INFO] checking for client updates: none
+2026-11-23 19:05:13 [INFO] network interface wlan0 up
+2026-11-23 19:05:17 [INFO] checking for client updates: none
+2026-11-23 19:05:19 [INFO] network interface wlan0 up
+2026-11-23 19:05:23 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:05:25 [INFO] network interface wlan0 up
+2026-11-23 19:05:27 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:05:30 [DEBUG] route table refreshed
+2026-11-23 19:05:32 [INFO] checking for client updates: none
+2026-11-23 19:05:35 [DEBUG] route table refreshed
+2026-11-23 19:05:36 [INFO] network interface wlan0 up
+2026-11-23 19:05:40 [DEBUG] route table refreshed
+2026-11-23 19:05:41 [DEBUG] keepalive sent
+2026-11-23 19:05:42 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:05:43 [INFO] checking for client updates: none
+2026-11-23 19:05:46 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:05:50 [DEBUG] route table refreshed
+2026-11-23 19:05:54 [INFO] network interface wlan0 up
+2026-11-23 19:05:55 [INFO] network interface wlan0 up
+2026-11-23 19:05:59 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:06:01 [DEBUG] tun0 stats rx=0 tx=0
+2026-11-23 19:06:02 [DEBUG] keepalive sent
+2026-11-23 19:06:05 [DEBUG] tun0 stats rx=0 tx=0
+2026-11-23 19:06:07 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:06:10 [INFO] network interface wlan0 up
+2026-11-23 19:06:14 [INFO] network interface wlan0 up
+2026-11-23 19:06:15 [INFO] network interface wlan0 up
+2026-11-23 19:06:17 [DEBUG] keepalive sent
+2026-11-23 19:06:20 [DEBUG] route table refreshed
+2026-11-23 19:06:24 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:06:28 [DEBUG] keepalive sent
+2026-11-23 19:06:31 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:06:34 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:06:35 [INFO] network interface wlan0 up
+2026-11-23 19:06:37 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:06:39 [DEBUG] keepalive sent
+2026-11-23 19:06:41 [DEBUG] tun0 stats rx=0 tx=0
+2026-11-23 19:06:43 [DEBUG] keepalive sent
+2026-11-23 19:06:47 [INFO] network interface wlan0 up
+2026-11-23 19:06:48 [INFO] network interface wlan0 up
+2026-11-23 19:06:51 [DEBUG] tun0 stats rx=0 tx=0
+2026-11-23 19:06:53 [DEBUG] keepalive sent
+2026-11-23 19:06:55 [INFO] checking for client updates: none
+2026-11-23 19:06:57 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:07:01 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:07:05 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:07:06 [DEBUG] tun0 stats rx=0 tx=0
+2026-11-23 19:07:07 [DEBUG] keepalive sent
+2026-11-23 19:07:09 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:07:12 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:07:16 [INFO] network interface wlan0 up
+2026-11-23 19:07:18 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:07:21 [INFO] network interface wlan0 up
+2026-11-23 19:07:22 [INFO] network interface wlan0 up
+2026-11-23 19:07:23 [DEBUG] keepalive sent
+2026-11-23 19:07:25 [INFO] checking for client updates: none
+2026-11-23 19:07:26 [DEBUG] keepalive sent
+2026-11-23 19:07:29 [DEBUG] tun0 stats rx=0 tx=0
+2026-11-23 19:07:30 [INFO] network interface wlan0 up
+2026-11-23 19:07:34 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:07:37 [DEBUG] tun0 stats rx=0 tx=0
+2026-11-23 19:07:38 [DEBUG] keepalive sent
+2026-11-23 19:07:39 [INFO] network interface wlan0 up
+2026-11-23 19:07:43 [DEBUG] route table refreshed
+2026-11-23 19:07:47 [DEBUG] route table refreshed
+2026-11-23 19:07:50 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:07:52 [DEBUG] route table refreshed
+2026-11-23 19:07:55 [INFO] connecting to vpn.northwind.ua:443
+2026-11-23 19:07:56 [DEBUG] loading client certificate ~/.northwind/client.pem
+2026-11-23 19:07:57 [DEBUG] certificate subject CN=olivia.brown, notAfter=2026-11-20T00:00:00Z
+2026-11-23 19:08:00 [ERROR] TLS handshake failed: certificate has expired
+2026-11-23 19:08:03 [ERROR] connection aborted: CERT_EXPIRED
+2026-11-23 19:08:06 [INFO] retrying in 30 s
+2026-11-23 19:08:08 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:08:11 [DEBUG] route table refreshed
+2026-11-23 19:08:13 [DEBUG] tun0 stats rx=0 tx=0
+2026-11-23 19:08:17 [DEBUG] route table refreshed
+2026-11-23 19:08:20 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:08:24 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:08:28 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:08:32 [INFO] checking for client updates: none
+2026-11-23 19:08:36 [DEBUG] tun0 stats rx=0 tx=0
+2026-11-23 19:08:38 [DEBUG] keepalive sent
+2026-11-23 19:08:39 [DEBUG] route table refreshed
+2026-11-23 19:08:41 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:08:42 [DEBUG] keepalive sent
+2026-11-23 19:08:44 [INFO] network interface wlan0 up
+2026-11-23 19:08:45 [DEBUG] route table refreshed
+2026-11-23 19:08:46 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:08:50 [DEBUG] keepalive sent
+2026-11-23 19:08:51 [DEBUG] tun0 stats rx=0 tx=0
+2026-11-23 19:08:53 [INFO] network interface wlan0 up
+2026-11-23 19:08:55 [INFO] checking for client updates: none
+2026-11-23 19:08:56 [INFO] checking for client updates: none
+2026-11-23 19:09:00 [DEBUG] tun0 stats rx=0 tx=0
+2026-11-23 19:09:03 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:09:07 [DEBUG] keepalive sent
+2026-11-23 19:09:08 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:09:11 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:09:12 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:09:16 [DEBUG] tun0 stats rx=0 tx=0
+2026-11-23 19:09:19 [INFO] checking for client updates: none
+2026-11-23 19:09:21 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:09:22 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:09:26 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:09:27 [DEBUG] keepalive sent
+2026-11-23 19:09:30 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:09:34 [DEBUG] tun0 stats rx=0 tx=0
+2026-11-23 19:09:37 [DEBUG] tun0 stats rx=0 tx=0
+2026-11-23 19:09:39 [INFO] checking for client updates: none
+2026-11-23 19:09:42 [INFO] checking for client updates: none
+2026-11-23 19:09:44 [INFO] checking for client updates: none
+2026-11-23 19:09:47 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:09:48 [INFO] network interface wlan0 up
+2026-11-23 19:09:50 [DEBUG] dns probe vpn.northwind.ua ok
+2026-11-23 19:09:52 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:09:53 [DEBUG] keepalive sent
+2026-11-23 19:09:55 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:09:56 [DEBUG] tun0 stats rx=0 tx=0
+2026-11-23 19:10:00 [INFO] network interface wlan0 up
+2026-11-23 19:10:04 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:10:08 [DEBUG] tun0 stats rx=0 tx=0
+2026-11-23 19:10:12 [DEBUG] keepalive sent
+2026-11-23 19:10:16 [DEBUG] mtu probe 1400 ok
+2026-11-23 19:10:19 [INFO] network interface wlan0 up
