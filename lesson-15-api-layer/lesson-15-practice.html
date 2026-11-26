@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Практика 15: API для AI-сервісу</title>
+<style>
+:root{
+  --bg:#f7f6f2; --panel:#ffffff; --ink:#1d1d1b; --muted:#5f5d57; --line:#e3e0d8;
+  --accent:#b4532a; --accent-soft:#f4e3da; --code-bg:#f1efe9; --ok:#2f6f4f; --warn:#8a5a00;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#151513; --panel:#1f1f1c; --ink:#ecebe6; --muted:#a8a69e; --line:#34332f;
+    --accent:#e08a5f; --accent-soft:#3a2a21; --code-bg:#262622; --ok:#7fc29b; --warn:#e0b25f;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#151513; --panel:#1f1f1c; --ink:#ecebe6; --muted:#a8a69e; --line:#34332f;
+  --accent:#e08a5f; --accent-soft:#3a2a21; --code-bg:#262622; --ok:#7fc29b; --warn:#e0b25f;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:17px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+.wrap{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+nav{border-right:1px solid var(--line);padding:24px 16px;position:sticky;top:0;height:100vh;overflow:auto;background:var(--panel)}
+nav h1{font-size:15px;margin:0 0 4px;letter-spacing:.02em}
+nav .sub{font-size:13px;color:var(--muted);margin-bottom:18px}
+nav ol{list-style:none;margin:0;padding:0}
+nav li button{all:unset;display:flex;gap:10px;align-items:baseline;width:100%;padding:8px 10px;border-radius:8px;cursor:pointer;font-size:14px;color:var(--ink)}
+nav li button:hover{background:var(--code-bg)}
+nav li button[aria-current="true"]{background:var(--accent-soft);color:var(--accent);font-weight:600}
+nav li .t{margin-left:auto;white-space:nowrap;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+main{padding:40px 56px 80px;max-width:980px}
+section{display:none}
+section.on{display:block}
+.kicker{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-weight:600}
+h2{font-size:34px;line-height:1.2;margin:6px 0 18px}
+h3{font-size:19px;margin:28px 0 8px}
+p{margin:0 0 14px}
+.lead{font-size:19px}
+.muted{color:var(--muted)}
+ol.steps{padding-left:22px;margin:0 0 14px}
+ol.steps li{margin-bottom:6px}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--code-bg);padding:1px 5px;border-radius:5px}
+.prompt,.codeblock{position:relative;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:10px 0 16px;white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14.5px;line-height:1.55}
+.prompt{border-left:4px solid var(--accent)}
+.prompt .label,.codeblock .label{display:block;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:12px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
+.copy{position:absolute;top:8px;right:8px;font:12px -apple-system,sans-serif;padding:4px 9px;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+.done{border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin:18px 0;background:var(--panel)}
+.done strong{color:var(--ok)}
+.doc{border-top:1px dashed var(--line);margin-top:26px;padding-top:12px;font-size:14.5px;color:var(--muted)}
+.doc a,.muted a{color:var(--accent)}
+.trap{border-left:4px solid var(--warn);padding:8px 14px;background:var(--panel);border-radius:0 10px 10px 0;margin:14px 0}
+table{border-collapse:collapse;width:100%;margin:10px 0 18px;font-size:15px}
+th,td{border-bottom:1px solid var(--line);text-align:left;padding:8px 10px;vertical-align:top}
+th{font-size:13px;color:var(--muted);font-weight:600}
+.pager{display:flex;justify-content:space-between;margin-top:40px}
+.pager button{font:inherit;font-size:15px;padding:9px 16px;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+.pager button:disabled{opacity:.35;cursor:default}
+.tools{margin-top:16px}
+.doc-inline{font-size:14px;color:var(--muted);margin:-4px 0 10px}
+.doc-inline a{color:var(--accent)}
+.tools button{font:inherit;font-size:13px;padding:5px 10px;border-radius:7px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+@media (max-width:820px){
+  .wrap{grid-template-columns:1fr}
+  nav{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}
+  main{padding:24px 16px 60px}
+  h2{font-size:27px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav aria-label="Кроки практики">
+  <h1>Практика 15</h1>
+  <div class="sub">API для AI-сервісу з coding-агентом · 68 хв</div>
+  <ol id="toc"></ol>
+  <div class="tools"><button id="theme">Тема</button></div>
+</nav>
+
+<main>
+
+<section data-min="5" data-title="Старт">
+  <div class="kicker">Крок 0 · 5 хв</div>
+  <h2>Порожня папка і Redis</h2>
+  <p class="lead">Збираємо API, яке робить коротке резюме звернення в підтримку і визначає його категорію. Модель справжня, через OpenRouter, тому кожен зайвий виклик коштує грошей і часу. Звідси й кеш, і ліміт, і фонова обробка.</p>
+  <ol class="steps">
+    <li>Створіть папку, поставте залежності, скопіюйте <code>tickets.jsonl</code> з репозиторію курсу (<code>lesson-15-api-layer/data/</code>) у <code>data/</code>.</li>
+    <li>Запустіть Redis у Docker. Без Docker пропустіть цей рядок і поставте в <code>.env</code> <code>USE_FAKEREDIS=1</code>.</li>
+    <li>Заповніть <code>.env</code> і додайте його в <code>.gitignore</code> до першого комміту.</li>
+    <li>Запустіть агента в папці.</li>
+  </ol>
+  <div class="codeblock"><span class="label">Термінал</span><button class="copy">Копіювати</button>mkdir ticket-api && cd ticket-api
+python3.12 -m venv .venv && source .venv/bin/activate
+pip install fastapi uvicorn httpx redis fakeredis pytest pytest-asyncio python-dotenv
+mkdir data && cp ../ai-engineeering-2/lesson-15-api-layer/data/tickets.jsonl data/   # шлях до вашої копії репозиторію курсу
+docker run -d --name redis -p 127.0.0.1:6379:6379 redis:8</div>
+  <div class="codeblock"><span class="label">.env</span><button class="copy">Копіювати</button>OPENROUTER_API_KEY=sk-or-...
+MODEL=openai/gpt-4o-mini
+API_KEYS=dev-key-1,dev-key-2,dev-key-3
+REDIS_URL=redis://localhost:6379/0
+USE_FAKEREDIS=0</div>
+  <div class="codeblock"><span class="label">Термінал</span><button class="copy">Копіювати</button>printf ".env\n.venv/\n__pycache__/\n" > .gitignore
+git init && git add .gitignore data && git commit -m "start"
+claude</div>
+  <p class="muted">Порт Redis прив'язано до <code>127.0.0.1</code>: в офіційному образі protected mode вимкнено, і документація образу не радить відкривати порт назовні без пароля.</p>
+  <div class="done"><strong>Готово, коли</strong> <code>docker exec redis redis-cli ping</code> відповідає <code>PONG</code> (або стоїть <code>USE_FAKEREDIS=1</code>), <code>git status</code> не показує <code>.env</code>, агент запущений.</div>
+  <div class="doc">Документація: <a href="https://hub.docker.com/_/redis">Docker Hub → redis</a>, <a href="https://github.com/cunla/fakeredis-py">fakeredis</a>, <a href="https://openrouter.ai/docs/quickstart">OpenRouter → Quickstart</a></div>
+</section>
+
+<section data-min="8" data-title="Інтерв'ю → SPEC.md">
+  <div class="kicker">Крок 1 · 8 хв</div>
+  <h2>Агент розпитує і пише SPEC.md</h2>
+  <ol class="steps">
+    <li>Надішліть агенту запит нижче.</li>
+    <li>Відповідайте на його питання за таблицею.</li>
+    <li>Прочитайте SPEC.md і викресліть зайве: базу даних, реєстрацію користувачів, вебсторінку, WebSocket.</li>
+    <li>Комміт.</li>
+  </ol>
+  <div class="prompt"><span class="label">Запит агенту</span><button class="copy">Копіювати</button>Хочу зробити API для підтримки: на вхід текст звернення, на вихід коротке резюме і категорія. Деталей ще не продумав. Розпитуй мене, доки не зможеш написати специфікацію, а тоді запиши її в SPEC.md: правила з номерами R1, R2…, ендпоінти, коди помилок, формат подій стріму і що поза обсягом. Код не пиши.
+
+Що має бути: звичайна відповідь JSON, відповідь стрімом, кеш однакових запитів, ліміт запитів на ключ і пакетна обробка багатьох тікетів у фоні зі статусом.
+
+Обмеження: Python 3.12, FastAPI, Redis (у тестах fakeredis), httpx, pytest. Модель через OpenRouter, ключ і назва моделі в .env. Тікети для пакетної обробки в data/tickets.jsonl.</div>
+  <table>
+    <tr><th>Питання агента</th><th>Відповідь</th></tr>
+    <tr><td>Що повертає <code>POST /summarize</code>?</td><td><code>summary</code> (до двох речень українською), <code>category</code> (одна з <code>billing</code>, <code>bug</code>, <code>account</code>, <code>other</code>), <code>cached</code> (true або false)</td></tr>
+    <tr><td>Обмеження на текст?</td><td>Порожній або довший за 4000 символів текст дає 422, модель не викликається</td></tr>
+    <tr><td>Як перевіряти клієнта?</td><td>Заголовок <code>X-API-Key</code> зі списку <code>API_KEYS</code> у .env. Немає або невідомий ключ дає 401, і це перевіряється раніше за ліміт і кеш</td></tr>
+    <tr><td>Що вважати однаковим запитом?</td><td>Той самий текст після обрізання пробілів по краях і заміни кількох пробілів одним, та сама <code>MODEL</code> і та сама <code>PROMPT_VERSION</code>. Ключ кешу: sha256 від цих трьох значень. TTL 1 година, temperature 0</td></tr>
+    <tr><td>Який ліміт?</td><td>10 запитів за хвилину на API-ключ, фіксоване вікно в Redis. 11-й запит дає 429 із заголовком <code>Retry-After</code>: скільки секунд до кінця вікна. Рахуються всі запити, навіть ті, що віддав кеш. <code>/batch</code> рахується як один запит</td></tr>
+    <tr><td>Як працює стрім?</td><td><code>POST /summarize/stream</code>, Server-Sent Events. Події <code>token</code> з полем <code>text</code>, наприкінці <code>done</code> з повним <code>summary</code>, при збої <code>error</code> з <code>message</code>. Категорія в стрімі поза обсягом. Якщо клієнт відключився, запит до моделі закривається</td></tr>
+    <tr><td>Як працює пакет?</td><td><code>POST /batch</code> з <code>{"tickets": [{"id", "text"}]}</code>, до 50 тікетів, відповідь 202 з <code>job_id</code>. <code>GET /jobs/{id}</code> повертає <code>status</code> (<code>queued</code>, <code>running</code>, <code>done</code>, <code>failed</code>), <code>processed</code>, <code>total</code> і <code>results</code>. Кожен тікет іде через кеш. Збій одного тікета дає в його результаті <code>error</code>, а job усе одно завершується. Чужий або невідомий <code>job_id</code> дає 404. Стан job у Redis з TTL 24 години</td></tr>
+    <tr><td>Що, коли модель недоступна?</td><td>502 з поясненням у <code>detail</code>. Помилку не кешувати</td></tr>
+  </table>
+  <div class="done"><strong>Готово, коли</strong> у SPEC.md кожне правило має номер, записано порядок перевірок (ключ, потім ліміт, кеш, модель), формат подій стріму і розділ «поза обсягом».</div>
+  <div class="doc">Документація: <a href="https://code.claude.com/docs/en/best-practices#brainstorm-with-claude-first">Claude Code → Brainstorm with Claude first</a></div>
+</section>
+
+<section data-min="8" data-title="Тести з SPEC">
+  <div class="kicker">Крок 2 · 8 хв</div>
+  <h2>Тести без мережі</h2>
+  <ol class="steps">
+    <li>Почніть нову сесію.</li>
+    <li>Надішліть запит на тести.</li>
+    <li>Перевірте тести за списком нижче, допишіть або виправте хоча б один.</li>
+    <li>Комміт.</li>
+  </ol>
+  <div class="codeblock"><span class="label">У сесії агента</span><button class="copy">Копіювати</button>/clear spec-interview</div>
+  <div class="prompt"><span class="label">Запит агенту</span><button class="copy">Копіювати</button>Прочитай @SPEC.md. Напиши pytest-тести в tests/ на кожне правило. Тести не ходять у мережу: клієнт моделі зроби залежністю FastAPI і підміняй через app.dependency_overrides на фейк, який повертає фіксовану відповідь і рахує свої виклики. Redis у тестах: fakeredis.FakeAsyncRedis. Код застосунку не пиши. Запусти pytest і покажи, що тести падають, бо застосунку ще немає.</div>
+  <h3>Перевірка тестів</h3>
+  <ol class="steps">
+    <li>Другий однаковий запит повертає <code>cached: true</code>, а лічильник викликів фейку не зріс.</li>
+    <li>Текст із зайвими пробілами потрапляє в той самий кеш, а інша <code>PROMPT_VERSION</code> ні.</li>
+    <li>11-й запит за хвилину дає 429 і <code>Retry-After</code>; запит без ключа лічильник не чіпає.</li>
+    <li>Стрім: події йдуть у порядку <code>token</code>… <code>done</code>, а склеєні токени дорівнюють <code>summary</code> з <code>done</code>.</li>
+    <li>Пакет з трьох тікетів, де фейк падає на одному: job стає <code>done</code>, у двох результатах є <code>summary</code>, в одному <code>error</code>.</li>
+    <li>Помилка моделі дає 502, і наступний такий самий запит знову викликає модель.</li>
+  </ol>
+  <div class="done"><strong>Готово, коли</strong> тести падають з помилкою імпорту чи 404, а не через помилки в самих тестах.</div>
+  <div class="doc">Документація: <a href="https://fastapi.tiangolo.com/advanced/testing-dependencies/">FastAPI → Testing dependencies with overrides</a>, <a href="https://github.com/cunla/fakeredis-py">fakeredis</a></div>
+</section>
+
+<section data-min="10" data-title="План і /summarize">
+  <div class="kicker">Крок 3 · 10 хв</div>
+  <h2>План, потім звичайний ендпоінт</h2>
+  <ol class="steps">
+    <li>Увімкніть режим плану: <code>Shift+Tab</code>, доки не з'явиться <code>⏸ plan mode on</code>.</li>
+    <li>Надішліть запит на план і перевірте його на пастку нижче.</li>
+    <li>Прийміть план і надішліть запит на реалізацію.</li>
+    <li>Запустіть сервер в окремому терміналі і перевірте ендпоінт справжньою моделлю.</li>
+    <li>Комміт.</li>
+  </ol>
+  <div class="prompt"><span class="label">Запит у режимі плану</span><button class="copy">Копіювати</button>Склади план реалізації @SPEC.md так, щоб пройшли всі тести в tests/. Спершу лише POST /summarize з ключем, лімітом і кешем, стрім і пакет окремими кроками. Для кожного кроку вкажи файли і які тести він закриває. Тести не змінюй.</div>
+  <div class="trap">Пастка в плані: синхронний клієнт (<code>requests</code>, синхронний <code>openai</code>, <code>time.sleep</code>) всередині <code>async def</code> блокує весь сервер, поки модель думає. Потрібен <code>httpx.AsyncClient</code>, створений один раз у <code>lifespan</code>, а не новий на кожен запит.</div>
+  <div class="prompt"><span class="label">Після прийняття плану</span><button class="copy">Копіювати</button>Реалізуй кроки плану для POST /summarize. Після кожного кроку запускай pytest. Наприкінці покажи команду і останній вивід pytest.</div>
+  <div class="codeblock"><span class="label">Другий термінал</span><button class="copy">Копіювати</button>uvicorn app.main:app --reload</div>
+  <div class="codeblock"><span class="label">Перевірка</span><button class="copy">Копіювати</button>curl -s -X POST localhost:8000/summarize \
+  -H "X-API-Key: dev-key-1" -H "Content-Type: application/json" \
+  -d '{"text": "З картки двічі списали 499 грн за підписку за листопад, хоча план у мене один."}'</div>
+  <div class="done"><strong>Готово, коли</strong> тести для <code>/summarize</code> зелені, <code>curl</code> повертає резюме з <code>category: billing</code>, а <code>git diff --stat tests/</code> порожній.</div>
+  <div class="doc">Документація: <a href="https://fastapi.tiangolo.com/async/">FastAPI → Concurrency and async / await</a>, <a href="https://fastapi.tiangolo.com/advanced/events/">FastAPI → Lifespan Events</a>, <a href="https://openrouter.ai/docs/quickstart">OpenRouter → Quickstart</a></div>
+</section>
+
+<section data-min="10" data-title="Streaming">
+  <div class="kicker">Крок 4 · 10 хв</div>
+  <h2>Відповідь стрімом</h2>
+  <ol class="steps">
+    <li>Оберіть спосіб і надішліть агенту відповідний запит.</li>
+    <li>Перевірте стрім через <code>curl -N</code>: текст має з'являтися частинами, а не весь наприкінці.</li>
+    <li>Перервіть <code>curl</code> посередині (<code>Ctrl+C</code>) і подивіться в лог сервера, що запит до моделі закрився.</li>
+    <li>Комміт.</li>
+  </ol>
+  <h3>Спосіб А: вбудований SSE у FastAPI</h3>
+  <p class="doc-inline">Документація: <a href="https://fastapi.tiangolo.com/tutorial/server-sent-events/">FastAPI → Server-Sent Events</a> (з версії 0.135.0)</p>
+  <div class="prompt"><span class="label">Запит агенту</span><button class="copy">Копіювати</button>Реалізуй POST /summarize/stream за @SPEC.md через fastapi.sse.EventSourceResponse і ServerSentEvent. До моделі ходи з "stream": true через той самий httpx.AsyncClient, рядки, що починаються з ":", пропускай, на "data: [DONE]" зупиняйся. Якщо клієнт відключився, закрий потік від моделі і залогуй це. Запусти pytest.</div>
+  <h3>Спосіб Б: StreamingResponse і формат вручну</h3>
+  <p class="doc-inline">Документація: <a href="https://fastapi.tiangolo.com/advanced/custom-response/">FastAPI → Custom Response</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events">MDN → Using server-sent events</a></p>
+  <div class="prompt"><span class="label">Запит агенту</span><button class="copy">Копіювати</button>Реалізуй POST /summarize/stream за @SPEC.md через StreamingResponse з media_type="text/event-stream". Кожну подію формуй сам: рядок "event: ...", рядок "data: {json}", потім порожній рядок. До моделі ходи з "stream": true, рядки з ":" пропускай, на "data: [DONE]" зупиняйся. Якщо клієнт відключився, закрий потік від моделі і залогуй це. Запусти pytest.</div>
+  <div class="codeblock"><span class="label">Перевірка</span><button class="copy">Копіювати</button>curl -N -X POST localhost:8000/summarize/stream \
+  -H "X-API-Key: dev-key-1" -H "Content-Type: application/json" \
+  -d '{"text": "Після оновлення на Android не відкривається розділ «Звіти»: білий екран і виліт."}'</div>
+  <p class="muted">Обрив з'єднання з OpenRouter зупиняє генерацію і оплату не в усіх провайдерів. За документацією OpenRouter OpenAI й Anthropic це підтримують, а Google, Groq, Mistral і AWS Bedrock ні: там модель допрацює, і ви заплатите за всю відповідь.</p>
+  <div class="done"><strong>Готово, коли</strong> <code>curl -N</code> показує кілька подій <code>token</code> і одну <code>done</code>, а після <code>Ctrl+C</code> у лозі сервера є запис про відключення клієнта.</div>
+  <div class="doc">Документація: <a href="https://openrouter.ai/docs/api/reference/streaming">OpenRouter → Streaming</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events">MDN → Using server-sent events</a></div>
+</section>
+
+<section data-min="12" data-title="Кеш і ліміт">
+  <div class="kicker">Крок 5 · 12 хв</div>
+  <h2>Кеш і 429 на живому сервері</h2>
+  <p>Тести вже перевірили логіку, тепер подивіться на неї на живому сервері: скільки часу займає запит до моделі і скільки відповідь із кешу, що лежить у Redis і коли сервер почне відмовляти.</p>
+  <ol class="steps">
+    <li>Надішліть двічі однаковий запит і порівняйте час. Свої цифри запишіть, на занятті 16 вони знадобляться.</li>
+    <li>Подивіться ключі в Redis і їхній TTL.</li>
+    <li>Надішліть 12 запитів поспіль і порахуйте коди відповідей.</li>
+    <li>Подивіться заголовок <code>Retry-After</code> у відповіді 429.</li>
+  </ol>
+  <div class="codeblock"><span class="label">Час з кешем і без</span><button class="copy">Копіювати</button>for i in 1 2; do
+  curl -s -o /dev/null -w "%{http_code} %{time_total}s\n" -X POST localhost:8000/summarize \
+    -H "X-API-Key: dev-key-2" -H "Content-Type: application/json" \
+    -d '{"text": "Не можу увійти: пароль правильний, а система каже, що ні."}'
+done</div>
+  <div class="codeblock"><span class="label">Що в Redis</span><button class="copy">Копіювати</button>docker exec redis redis-cli --scan
+docker exec redis redis-cli ttl "$(docker exec redis redis-cli --scan | head -1)"</div>
+  <div class="codeblock"><span class="label">12 запитів поспіль</span><button class="copy">Копіювати</button>for i in $(seq 1 12); do
+  curl -s -o /dev/null -w "%{http_code}\n" -X POST localhost:8000/summarize \
+    -H "X-API-Key: dev-key-3" -H "Content-Type: application/json" -d '{"text": "Тест ліміту"}'
+done | sort | uniq -c</div>
+  <div class="codeblock"><span class="label">Заголовок Retry-After</span><button class="copy">Копіювати</button>curl -si -X POST localhost:8000/summarize -H "X-API-Key: dev-key-3" \
+  -H "Content-Type: application/json" -d '{"text": "Тест ліміту"}' | grep -i -E "^HTTP|retry-after"</div>
+  <div class="trap">Попросіть агента показати код ліміту. Якщо там <code>INCR</code>, а <code>EXPIRE</code> окремою командою лише тоді, коли значення стало 1, між ними можливий збій. Документація Redis називає це race condition: ключ лишиться без TTL, і клієнт застрягне в 429 назавжди. Виправлення: <code>INCR</code> і <code>EXPIRE</code> в одній транзакції (<code>MULTI</code>/<code>EXEC</code>) або Lua-скрипт.</div>
+  <p>Ліміт рахує запити, а гроші залежать від токенів. Чи однакові для вас 10 запитів по 4000 символів і 10 запитів по 40? Відповідь знадобиться в ДЗ.</p>
+  <div class="done"><strong>Готово, коли</strong> другий запит має <code>cached: true</code> і помітно швидший, з 12 запитів 10 мають код 200 і 2 мають 429, а <code>Retry-After</code> не більший за 60.</div>
+  <div class="doc">Документація: <a href="https://redis.io/docs/latest/commands/incr/">Redis → INCR, Pattern: Rate limiter</a>, <a href="https://redis.io/docs/latest/commands/set/">Redis → SET</a>, <a href="https://www.rfc-editor.org/rfc/rfc6585#section-4">RFC 6585 → 429 Too Many Requests</a></div>
+</section>
+
+<section data-min="10" data-title="Background job">
+  <div class="kicker">Крок 6 · 10 хв</div>
+  <h2>Пакет у фоні</h2>
+  <ol class="steps">
+    <li>Оберіть спосіб і надішліть агенту відповідний запит.</li>
+    <li>Відправте всі 20 тікетів з <code>data/tickets.jsonl</code> і стежте за статусом.</li>
+    <li>Запустіть пакет ще раз і зупиніть процес, що його виконує (<code>Ctrl+C</code>), поки статус <code>running</code>. Запустіть знову і подивіться, що сталося з job.</li>
+    <li>Комміт.</li>
+  </ol>
+  <h3>Спосіб А: BackgroundTasks</h3>
+  <p class="doc-inline">Документація: <a href="https://fastapi.tiangolo.com/tutorial/background-tasks/">FastAPI → Background Tasks</a></p>
+  <div class="prompt"><span class="label">Запит агенту</span><button class="copy">Копіювати</button>Реалізуй POST /batch і GET /jobs/{id} за @SPEC.md через FastAPI BackgroundTasks. Стан job тримай у Redis, оновлюй processed після кожного тікета. Тікети обробляй послідовно, кожен через кеш. Запусти pytest.</div>
+  <h3>Спосіб Б: черга arq і окремий worker</h3>
+  <p class="doc-inline">Документація: <a href="https://arq-docs.helpmanual.io/">arq</a></p>
+  <div class="prompt"><span class="label">Запит агенту</span><button class="copy">Копіювати</button>Реалізуй POST /batch і GET /jobs/{id} за @SPEC.md через чергу arq на тому самому Redis: ендпоінт кладе job у чергу через enqueue_job, обробка в app/worker.py з WorkerSettings. Стан job і processed тримай у Redis. У тестах виклич функцію worker'а напряму, без окремого процесу. Додай arq у залежності. Запусти pytest.</div>
+  <div class="codeblock"><span class="label">Лише для способу Б: третій термінал</span><button class="copy">Копіювати</button>pip install arq
+arq app.worker.WorkerSettings</div>
+  <div class="codeblock"><span class="label">Відправити пакет і стежити</span><button class="copy">Копіювати</button>JOB=$(python -c "import json; print(json.dumps({'tickets': [json.loads(l) for l in open('data/tickets.jsonl')]}))" \
+  | curl -s -X POST localhost:8000/batch -H "X-API-Key: dev-key-2" -H "Content-Type: application/json" -d @- \
+  | python -c "import json,sys; print(json.load(sys.stdin)['job_id'])")
+for i in $(seq 1 10); do
+  curl -s localhost:8000/jobs/$JOB -H "X-API-Key: dev-key-2" | python -c "import json,sys; d=json.load(sys.stdin); print(d['status'], d['processed'], '/', d['total'])"
+  sleep 2
+done</div>
+  <table>
+    <tr><th></th><th>BackgroundTasks</th><th>arq</th></tr>
+    <tr><td>Де виконується</td><td>У тому самому процесі, після відповіді</td><td>В окремому процесі worker'а, можна на іншій машині</td></tr>
+    <tr><td>Що буде після перезапуску</td><td>Job зависає в <code>running</code>, бо виконувати його вже нікому</td><td>Документація arq попереджає: «Jobs may be called more than once!» Перерваний job виконується знову, тому обробка має бути безпечною для повтору</td></tr>
+    <tr><td>Коли брати</td><td>Короткі задачі: лист, запис у лог</td><td>Довгі задачі і задачі, які не можна загубити</td></tr>
+  </table>
+  <div class="done"><strong>Готово, коли</strong> пакет із 20 тікетів доходить до <code>done 20 / 20</code>, а після перезапуску посередині ви бачили, що сталося з job, і можете пояснити чому.</div>
+  <div class="doc">Документація: <a href="https://fastapi.tiangolo.com/tutorial/background-tasks/">FastAPI → Background Tasks (Caveat)</a>, <a href="https://arq-docs.helpmanual.io/">arq</a>, <a href="https://python-rq.org/docs/">RQ</a></div>
+</section>
+
+<section data-min="5" data-title="Підсумок і ДЗ">
+  <div class="kicker">Крок 7 · 5 хв</div>
+  <h2>Що перевірити перед здачею</h2>
+  <table>
+    <tr><th>Що</th><th>Як перевірити</th></tr>
+    <tr><td>Тести не ходять у мережу</td><td>Вимкніть Wi-Fi і запустіть <code>pytest -q</code></td></tr>
+    <tr><td>Сервер не блокується</td><td>Під час стріму надішліть інший запит: він має відповісти, не чекаючи кінця стріму</td></tr>
+    <tr><td>Кеш не віддає застарілого</td><td>Змініть <code>PROMPT_VERSION</code> і перевірте, що відповідь знову <code>cached: false</code></td></tr>
+    <tr><td>Ліміт не зламано назавжди</td><td>Після 429 зачекайте <code>Retry-After</code> секунд, і запит знову дає 200</td></tr>
+    <tr><td>Ключа немає в репозиторії</td><td><code>git log -p | grep -i "sk-or"</code> нічого не знаходить</td></tr>
+  </table>
+  <h3>Вдома</h3>
+  <ol class="steps">
+    <li>Загорніть свій курсовий проєкт в API з тими самими трьома речами: стрім, кеш з лімітом, фонова обробка довгої задачі.</li>
+    <li>Ліміт на токени або гроші за добу на ключ поруч із лімітом на запити.</li>
+    <li>Dockerfile і <code>compose.yaml</code> із сервісами <code>api</code>, <code>redis</code> (і <code>worker</code>, якщо брали arq). Приклади в PDF підготовки.</li>
+    <li>GitHub Actions: <code>pytest</code> на кожен push з Redis як service container.</li>
+  </ol>
+  <h3>Джерела</h3>
+  <ul class="muted">
+    <li><a href="https://fastapi.tiangolo.com/async/">FastAPI → Concurrency and async / await</a></li>
+    <li><a href="https://fastapi.tiangolo.com/tutorial/server-sent-events/">FastAPI → Server-Sent Events</a></li>
+    <li><a href="https://fastapi.tiangolo.com/tutorial/background-tasks/">FastAPI → Background Tasks</a></li>
+    <li><a href="https://fastapi.tiangolo.com/deployment/docker/">FastAPI → FastAPI in Containers</a></li>
+    <li><a href="https://redis.io/docs/latest/commands/incr/">Redis → INCR, Pattern: Rate limiter</a></li>
+    <li><a href="https://openrouter.ai/docs/api/reference/streaming">OpenRouter → Streaming</a></li>
+    <li><a href="https://docs.github.com/en/actions/use-cases-and-examples/using-containerized-services/creating-redis-service-containers">GitHub Actions → Redis service containers</a></li>
+  </ul>
+</section>
+
+<div class="pager"><button id="prev">← Назад</button><button id="next">Далі →</button></div>
+</main>
+</div>
+
+<script>
+(function(){
+  var secs=[].slice.call(document.querySelectorAll('section'));
+  var toc=document.getElementById('toc');
+  var cur=0;
+  secs.forEach(function(s,i){
+    var li=document.createElement('li');
+    var b=document.createElement('button');
+    b.innerHTML='<span>'+i+'. '+s.dataset.title+'</span><span class="t">'+s.dataset.min+' хв</span>';
+    b.addEventListener('click',function(){go(i)});
+    li.appendChild(b);toc.appendChild(li);
+  });
+  var btns=[].slice.call(toc.querySelectorAll('button'));
+  function go(i){
+    if(i<0||i>=secs.length)return;
+    cur=i;
+    secs.forEach(function(s,j){s.classList.toggle('on',j===i)});
+    btns.forEach(function(b,j){b.setAttribute('aria-current',j===i?'true':'false')});
+    document.getElementById('prev').disabled=i===0;
+    document.getElementById('next').disabled=i===secs.length-1;
+    try{history.replaceState(null,'','#'+i)}catch(e){}
+    window.scrollTo(0,0);
+  }
+  document.getElementById('prev').onclick=function(){go(cur-1)};
+  document.getElementById('next').onclick=function(){go(cur+1)};
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight')go(cur+1);
+    if(e.key==='ArrowLeft')go(cur-1);
+  });
+  document.querySelectorAll('.copy').forEach(function(b){
+    b.addEventListener('click',function(){
+      var box=b.parentNode.cloneNode(true);
+      box.querySelectorAll('.copy,.label').forEach(function(n){n.remove()});
+      var txt=box.textContent.trim();
+      var done=function(){b.textContent='Скопійовано';setTimeout(function(){b.textContent='Копіювати'},1200)};
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,function(){fallback(txt);done()})}
+      else{fallback(txt);done()}
+    });
+  });
+  function fallback(t){var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(e){}a.remove()}
+  document.getElementById('theme').onclick=function(){
+    var r=document.documentElement,d=r.getAttribute('data-theme');
+    var dark=d?d==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    r.setAttribute('data-theme',dark?'light':'dark');
+  };
+  var h=parseInt((location.hash||'#0').slice(1),10);
+  go(isNaN(h)?0:h);
+})();
+</script>
+</body>
+</html>
